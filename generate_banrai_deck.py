@@ -1,6 +1,4 @@
 import os
-import math
-from PIL import Image, ImageDraw, ImageFilter
 from pptx import Presentation
 from pptx.util import Inches, Pt
 from pptx.dml.color import RGBColor
@@ -8,147 +6,51 @@ from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
 OUT_DIR = "/Users/mklaw/Developer/klaw/Seed Plus Round"
-BG_DIR = "/tmp/banrai_slide_bgs"
-os.makedirs(BG_DIR, exist_ok=True)
 
-
-def make_ambient_bg(filename, mode="dark", variant=0):
-    """Generates a peacefully delightful, calm ambient 1920x1080 background inspired by banrai.ai."""
-    w, h = 1920, 1080
-    if mode == "dark":
-        # Serene nocturnal twilight base (#0B101B)
-        base = Image.new("RGBA", (w, h), (11, 16, 27, 255))
-        overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(overlay)
-
-        # Soft aurora orbs (lime #CAFB5B, mint #A8E6CF, lavender #C7B9FF)
-        orbs = [
-            # (cx, cy, radius, (r, g, b, max_alpha))
-            (int(w * (0.82 if variant % 2 == 0 else 0.18)), int(h * 0.18), 520, (202, 251, 91, 22)),
-            (int(w * (0.15 if variant % 2 == 0 else 0.85)), int(h * 0.82), 580, (168, 230, 207, 18)),
-            (int(w * 0.52), int(h * (0.12 if variant % 3 == 0 else 0.88)), 620, (199, 185, 255, 16)),
-        ]
-        for cx, cy, rad, col in orbs:
-            draw.ellipse((cx - rad, cy - rad, cx + rad, cy + rad), fill=col)
-
-        overlay = overlay.filter(ImageFilter.GaussianBlur(radius=160))
-        img = Image.alpha_composite(base, overlay)
-
-        # Add a few tiny, peaceful firefly/starlight dots like banrai.ai
-        dots = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-        d_draw = ImageDraw.Draw(dots)
-        positions = [
-            (180, 140, (202, 251, 91, 70), 3),
-            (1720, 190, (168, 230, 207, 65), 3),
-            (1640, 920, (199, 185, 255, 60), 3),
-            (290, 910, (255, 255, 255, 45), 2),
-            (980, 95, (202, 251, 91, 50), 2),
-        ]
-        for x, y, c, r in positions:
-            d_draw.ellipse((x - r*3, y - r*3, x + r*3, y + r*3), fill=(c[0], c[1], c[2], 18))
-            d_draw.ellipse((x - r, y - r, x + r, y + r), fill=c)
-        img = Image.alpha_composite(img, dots)
-    else:
-        # Serene daylight/morning calm base (#F7F9F7)
-        base = Image.new("RGBA", (w, h), (246, 248, 245, 255))
-        overlay = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-        draw = ImageDraw.Draw(overlay)
-        orbs = [
-            (int(w * (0.82 if variant % 2 == 0 else 0.18)), int(h * 0.18), 520, (202, 251, 91, 55)),
-            (int(w * (0.15 if variant % 2 == 0 else 0.85)), int(h * 0.82), 580, (168, 230, 207, 50)),
-            (int(w * 0.52), int(h * (0.12 if variant % 3 == 0 else 0.88)), 620, (199, 185, 255, 42)),
-        ]
-        for cx, cy, rad, col in orbs:
-            draw.ellipse((cx - rad, cy - rad, cx + rad, cy + rad), fill=col)
-        overlay = overlay.filter(ImageFilter.GaussianBlur(radius=150))
-        img = Image.alpha_composite(base, overlay)
-
-    path = os.path.join(BG_DIR, filename)
-    img.convert("RGB").save(path, "PNG", optimize=True)
-    return path
-
-
-def get_palette(mode="dark"):
-    if mode == "dark":
-        return {
-            "mode": "dark",
-            "bg": RGBColor(11, 16, 27),
-            "card_bg": RGBColor(19, 26, 41),
-            "card_bg_alt": RGBColor(23, 32, 49),
-            "card_border": RGBColor(42, 54, 79),
-            "placeholder_bg": RGBColor(15, 21, 34),
-            "placeholder_border": RGBColor(65, 85, 115),
-            "text_primary": RGBColor(242, 245, 248),
-            "text_secondary": RGBColor(162, 176, 196),
-            "text_muted": RGBColor(108, 124, 148),
-            "accent_lime": RGBColor(202, 251, 91),       # #CAFB5B (Banrai Primary)
-            "accent_mint": RGBColor(168, 230, 207),      # #A8E6CF (Banrai Secondary)
-            "accent_lavender": RGBColor(199, 185, 255),  # #C7B9FF (Banrai Tertiary)
-            "accent_amber": RGBColor(253, 224, 141),     # Soft warm sunlight
-            "pill_bg": RGBColor(26, 38, 34),
-            "pill_text": RGBColor(202, 251, 91),
-            "dark_text_on_lime": RGBColor(11, 16, 27),
-        }
-    else:
-        return {
-            "mode": "light",
-            "bg": RGBColor(246, 248, 245),
-            "card_bg": RGBColor(255, 255, 255),
-            "card_bg_alt": RGBColor(240, 244, 239),
-            "card_border": RGBColor(218, 226, 220),
-            "placeholder_bg": RGBColor(237, 242, 238),
-            "placeholder_border": RGBColor(176, 192, 182),
-            "text_primary": RGBColor(17, 24, 34),
-            "text_secondary": RGBColor(74, 88, 104),
-            "text_muted": RGBColor(124, 138, 152),
-            "accent_lime": RGBColor(92, 142, 18),        # Deeper botanical green for light mode text
-            "accent_lime_fill": RGBColor(202, 251, 91),  # Original Banrai lime for badges/dots
-            "accent_mint": RGBColor(38, 132, 102),
-            "accent_lavender": RGBColor(106, 82, 186),
-            "accent_amber": RGBColor(180, 118, 24),
-            "pill_bg": RGBColor(230, 244, 200),
-            "pill_text": RGBColor(54, 92, 10),
-            "dark_text_on_lime": RGBColor(17, 24, 34),
-        }
-
+# ==============================================================================
+# PANTONE-INSPIRED CALM LIGHT PALETTE
+# ==============================================================================
+# Designed for effortless readability and calm visual hierarchy.
+# Bright Banrai Lime (#CAFB5B) is strictly reserved for 1 key callout per slide.
+PAL = {
+    "bg_canvas": RGBColor(244, 242, 237),       # Pantone 11-4201 Cloud Dancer / Warm Alabaster (#F4F2ED)
+    "card_white": RGBColor(251, 250, 247),      # Pantone Marshmallow / Soft Paper (#FBFAF7)
+    "card_stone": RGBColor(236, 233, 225),      # Pantone 12-0104 Warm Sand / Travertine (#ECE9E1)
+    "card_sage": RGBColor(225, 232, 224),       # Pantone Soft Celadon / Sage Tint (#E1E8E0)
+    "card_slate": RGBColor(224, 231, 236),      # Pantone Pale Mist / Slate Tint (#E0E7EC)
+    "border_subtle": RGBColor(216, 212, 202),   # Pantone Pumice Stone (#D8D4CA)
+    "border_strong": RGBColor(168, 164, 154),   # Pantone Warm Taupe Border (#A8A49A)
+    "ink_primary": RGBColor(35, 38, 42),        # Pantone 19-4007 After Dark / Charcoal (#23262A)
+    "ink_secondary": RGBColor(96, 101, 108),    # Pantone 17-4402 Neutral Gray (#60656C)
+    "ink_muted": RGBColor(142, 146, 152),       # Pantone Harbor Mist (#8E9298)
+    "sage_accent": RGBColor(88, 114, 92),       # Pantone 17-0210 Laurel Oak (#58725C)
+    "slate_accent": RGBColor(78, 105, 122),     # Pantone 17-4412 Porcelain Blue (#4E697A)
+    "terracotta_muted": RGBColor(166, 112, 96), # Pantone Muted Clay (#A67060)
+    # RESERVED FOR SINGLE HERO CALLOUT PER SLIDE + LOGO DOT ONLY:
+    "callout_lime": RGBColor(202, 251, 91),     # Banrai Signature Lime (#CAFB5B)
+    "callout_lime_border": RGBColor(156, 204, 48),
+}
 
 FONT_MAIN = "Poppins"
 
 
-def add_bg(slide, prs, bg_path):
-    slide.shapes.add_picture(bg_path, 0, 0, width=prs.slide_width, height=prs.slide_height)
+def set_slide_bg(slide, color):
+    background = slide.background
+    fill = background.fill
+    fill.solid()
+    fill.fore_color.rgb = color
 
 
-def add_textbox(slide, left, top, width, height, text, font_size=16, bold=False,
-                color=RGBColor(255, 255, 255), align=PP_ALIGN.LEFT,
-                line_spacing=1.25, font_name=FONT_MAIN, anchor=MSO_ANCHOR.TOP):
-    tb = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
-    tf = tb.text_frame
-    tf.word_wrap = True
-    tf.vertical_anchor = anchor
-    tf.margin_left = Inches(0)
-    tf.margin_right = Inches(0)
-    tf.margin_top = Inches(0)
-    tf.margin_bottom = Inches(0)
-    p = tf.paragraphs[0]
-    p.text = text
-    p.alignment = align
-    p.line_spacing = line_spacing
-    p.font.name = font_name
-    p.font.size = Pt(font_size)
-    p.font.bold = bold
-    p.font.color.rgb = color
-    return tb
-
-
-def add_card(slide, left, top, width, height, fill_color, border_color=None, border_pt=1.0, radius=0.04):
-    shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE,
-        Inches(left), Inches(top), Inches(width), Inches(height)
-    )
-    shape.adjustments[0] = radius
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = fill_color
+def add_box(slide, left, top, width, height, fill_color=None, border_color=None,
+            border_pt=1.0, shape_type=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.05):
+    shape = slide.shapes.add_shape(shape_type, Inches(left), Inches(top), Inches(width), Inches(height))
+    if shape_type == MSO_SHAPE.ROUNDED_RECTANGLE and len(shape.adjustments) > 0:
+        shape.adjustments[0] = radius
+    if fill_color:
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = fill_color
+    else:
+        shape.fill.background()
     if border_color:
         shape.line.color.rgb = border_color
         shape.line.width = Pt(border_pt)
@@ -157,621 +59,459 @@ def add_card(slide, left, top, width, height, fill_color, border_color=None, bor
     return shape
 
 
-def add_banrai_logo(slide, left, top, size="small", pal=None):
-    """Draws the official Banrai wordmark + glowing lime circle from banrai.ai."""
-    dot_color = pal.get("accent_lime_fill", pal["accent_lime"])
-    if size == "hero":
-        # Centered hero logo on Slide 1
-        add_textbox(
-            slide, left, top, 3.6, 1.1, "Banrai",
-            font_size=64, bold=True, color=pal["text_primary"],
-            align=PP_ALIGN.RIGHT
-        )
-        # Outer subtle halo circle
-        halo = slide.shapes.add_shape(
-            MSO_SHAPE.OVAL,
-            Inches(left + 3.72), Inches(top + 0.42), Inches(0.36), Inches(0.36)
-        )
-        halo.fill.solid()
-        halo.fill.fore_color.rgb = pal["pill_bg"]
-        halo.line.fill.background()
-
-        dot = slide.shapes.add_shape(
-            MSO_SHAPE.OVAL,
-            Inches(left + 3.80), Inches(top + 0.50), Inches(0.20), Inches(0.20)
-        )
-        dot.fill.solid()
-        dot.fill.fore_color.rgb = dot_color
-        dot.line.fill.background()
-    else:
-        # Top-right or footer mini logo
-        add_textbox(
-            slide, left, top, 1.15, 0.35, "Banrai",
-            font_size=15, bold=True, color=pal["text_secondary"],
-            align=PP_ALIGN.RIGHT
-        )
-        dot = slide.shapes.add_shape(
-            MSO_SHAPE.OVAL,
-            Inches(left + 1.20), Inches(top + 0.12), Inches(0.09), Inches(0.09)
-        )
-        dot.fill.solid()
-        dot.fill.fore_color.rgb = dot_color
-        dot.line.fill.background()
-
-
-def add_slide_header(slide, eyebrow, title, subtitle, pal, slide_num=None):
-    """Consistent, calm, editorial slide header with generous whitespace."""
-    # Eyebrow pill/label
-    add_textbox(
-        slide, 0.85, 0.55, 6.0, 0.3, eyebrow.upper(),
-        font_size=10, bold=True, color=pal["accent_lime"],
-        line_spacing=1.1
-    )
-    # Top-right logo & slide number
-    add_banrai_logo(slide, 11.15, 0.50, size="small", pal=pal)
-    if slide_num:
-        add_textbox(
-            slide, 11.8, 6.92, 0.7, 0.3, f"{slide_num:02d} / 09",
-            font_size=9.5, bold=False, color=pal["text_muted"],
-            align=PP_ALIGN.RIGHT
-        )
-
-    # Main Title
-    add_textbox(
-        slide, 0.85, 0.88, 10.8, 0.65, title,
-        font_size=28, bold=True, color=pal["text_primary"],
-        line_spacing=1.15
-    )
-    if subtitle:
-        add_textbox(
-            slide, 0.85, 1.48, 10.2, 0.45, subtitle,
-            font_size=13.5, bold=False, color=pal["text_secondary"],
-            line_spacing=1.3
-        )
-
-
-def add_image_placeholder(slide, left, top, width, height, label, sublabel, pal, accent_color=None):
-    """Creates a clean, spacious, unmistakable image drop zone for product imagery."""
-    border_col = accent_color if accent_color else pal["placeholder_border"]
-    box = add_card(
-        slide, left, top, width, height,
-        fill_color=pal["placeholder_bg"],
-        border_color=border_col,
-        border_pt=1.25,
-        radius=0.04
-    )
-    # Inner subtle frame corners / icon circle
-    cx = left + width / 2.0
-    cy = top + height / 2.0 - 0.22
-    icon_circle = slide.shapes.add_shape(
-        MSO_SHAPE.OVAL,
-        Inches(cx - 0.28), Inches(cy - 0.28), Inches(0.56), Inches(0.56)
-    )
-    icon_circle.fill.solid()
-    icon_circle.fill.fore_color.rgb = pal["card_bg_alt"]
-    icon_circle.line.color.rgb = border_col
-    icon_circle.line.width = Pt(1.0)
-
-    add_textbox(
-        slide, cx - 0.28, cy - 0.26, 0.56, 0.52, "✦",
-        font_size=16, bold=True, color=border_col,
-        align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE
-    )
-
-    add_textbox(
-        slide, left + 0.3, cy + 0.38, width - 0.6, 0.35, label,
-        font_size=12, bold=True, color=pal["text_primary"],
-        align=PP_ALIGN.CENTER
-    )
-    add_textbox(
-        slide, left + 0.3, cy + 0.68, width - 0.6, 0.4, sublabel,
-        font_size=10, bold=False, color=pal["text_muted"],
-        align=PP_ALIGN.CENTER
-    )
-    return box
-
-
-def add_pill_badge(slide, left, top, width, height, text, bg_color, text_color, border_color=None, font_size=9.5):
-    pill = add_card(slide, left, top, width, height, fill_color=bg_color, border_color=border_color, border_pt=1.0, radius=0.5)
-    add_textbox(
-        slide, left + 0.08, top + 0.02, width - 0.16, height - 0.04, text,
-        font_size=font_size, bold=True, color=text_color,
-        align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE
-    )
-    return pill
-
-
-def add_bullet_list(slide, left, top, width, height, items, pal, accent_color=None, font_size=12.5, spacing=10):
+def add_text(slide, left, top, width, height, text, size=14, bold=False,
+             color=PAL["ink_primary"], align=PP_ALIGN.LEFT,
+             anchor=MSO_ANCHOR.TOP, line_spacing=1.2):
     tb = slide.shapes.add_textbox(Inches(left), Inches(top), Inches(width), Inches(height))
     tf = tb.text_frame
     tf.word_wrap = True
+    tf.vertical_anchor = anchor
     tf.margin_left = Inches(0)
     tf.margin_right = Inches(0)
     tf.margin_top = Inches(0)
     tf.margin_bottom = Inches(0)
-
-    dot_col = accent_color if accent_color else pal["accent_lime"]
-    for idx, (lead, body) in enumerate(items):
-        p = tf.paragraphs[0] if idx == 0 else tf.add_paragraph()
-        p.space_after = Pt(spacing)
-        p.line_spacing = 1.32
-
-        r_dot = p.add_run()
-        r_dot.text = "●  "
-        r_dot.font.name = FONT_MAIN
-        r_dot.font.size = Pt(font_size - 2)
-        r_dot.font.color.rgb = dot_col
-
-        if lead:
-            r_lead = p.add_run()
-            r_lead.text = lead + " "
-            r_lead.font.name = FONT_MAIN
-            r_lead.font.size = Pt(font_size)
-            r_lead.font.bold = True
-            r_lead.font.color.rgb = pal["text_primary"]
-
-        r_body = p.add_run()
-        r_body.text = body
-        r_body.font.name = FONT_MAIN
-        r_body.font.size = Pt(font_size)
-        r_body.font.bold = False
-        r_body.font.color.rgb = pal["text_secondary"]
+    lines = text.split("\n")
+    for i, line in enumerate(lines):
+        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph()
+        p.text = line
+        p.alignment = align
+        p.line_spacing = line_spacing
+        p.font.name = FONT_MAIN
+        p.font.size = Pt(size)
+        p.font.bold = bold
+        p.font.color.rgb = color
     return tb
 
 
-def build_deck(output_filename, mode="dark"):
+def add_logo(slide, left, top, hero=False):
+    if hero:
+        add_text(slide, left, top, 3.3, 1.0, "Banrai", size=60, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.RIGHT)
+        dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(left + 3.40), Inches(top + 0.48), Inches(0.22), Inches(0.22))
+        dot.fill.solid()
+        dot.fill.fore_color.rgb = PAL["callout_lime"]
+        dot.line.color.rgb = PAL["callout_lime_border"]
+        dot.line.width = Pt(1.0)
+    else:
+        add_text(slide, left, top, 1.1, 0.35, "Banrai", size=14, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.RIGHT)
+        dot = slide.shapes.add_shape(MSO_SHAPE.OVAL, Inches(left + 1.15), Inches(top + 0.11), Inches(0.09), Inches(0.09))
+        dot.fill.solid()
+        dot.fill.fore_color.rgb = PAL["callout_lime"]
+        dot.line.color.rgb = PAL["callout_lime_border"]
+        dot.line.width = Pt(0.75)
+
+
+def add_header(slide, section_label, title, slide_label):
+    set_slide_bg(slide, PAL["bg_canvas"])
+    # Calm section label
+    add_text(slide, 0.9, 0.55, 6.0, 0.28, section_label.upper(), size=9.5, bold=True, color=PAL["sage_accent"])
+    # Top-right logo
+    add_logo(slide, 11.15, 0.50, hero=False)
+    # Bottom-right slide counter
+    add_text(slide, 11.3, 6.90, 1.15, 0.28, slide_label, size=9, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.RIGHT)
+    # Crisp, editorial headline
+    add_text(slide, 0.9, 0.88, 10.5, 0.65, title, size=28, bold=True, color=PAL["ink_primary"], line_spacing=1.12)
+
+
+def add_image_placeholder(slide, left, top, width, height, title, subtitle):
+    add_box(slide, left, top, width, height, fill_color=PAL["card_stone"], border_color=PAL["border_strong"], border_pt=1.25, radius=0.04)
+    cx = left + width / 2.0
+    cy = top + height / 2.0
+    # Minimal camera / frame icon badge
+    add_box(slide, cx - 0.26, cy - 0.48, 0.52, 0.52, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], shape_type=MSO_SHAPE.OVAL)
+    add_text(slide, cx - 0.26, cy - 0.48, 0.52, 0.52, "＋", size=16, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
+    add_text(slide, left + 0.3, cy + 0.14, width - 0.6, 0.32, title, size=11.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(slide, left + 0.3, cy + 0.42, width - 0.6, 0.32, subtitle, size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
+
+
+def build_pantone_deck(output_path):
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
-    blank_layout = prs.slide_layouts[6]
-    pal = get_palette(mode)
+    blank = prs.slide_layouts[6]
 
-    bgs = [make_ambient_bg(f"bg_{mode}_{i}.png", mode=mode, variant=i) for i in range(9)]
+    # ==========================================================================
+    # SLIDE 1: COVER — CALM, SPACIOUS, MINIMAL
+    # ==========================================================================
+    s1 = prs.slides.add_slide(blank)
+    set_slide_bg(s1, PAL["bg_canvas"])
 
-    # =========================================================================
-    # SLIDE 1: COVER / TITLE SLIDE
-    # =========================================================================
-    s1 = prs.slides.add_slide(blank_layout)
-    add_bg(s1, prs, bgs[0])
+    # Soft architectural frame card
+    add_box(s1, 0.75, 0.65, 11.833, 6.20, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
 
-    # Top pill badge
-    add_pill_badge(
-        s1, 4.76, 1.55, 3.8, 0.36,
-        "✦  AI-NATIVE CONSUMER ECOSYSTEM",
-        bg_color=pal["pill_bg"], text_color=pal["pill_text"],
-        border_color=pal["accent_lime"], font_size=9.5
+    # Logo centered
+    add_logo(s1, 4.70, 1.85, hero=True)
+
+    # Crisp 1-line thesis + quiet mission
+    add_text(
+        s1, 1.5, 3.15, 10.333, 0.65,
+        "Consumer AI Hardware Built for Joy, Not Chores.",
+        size=28, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER
+    )
+    add_text(
+        s1, 2.5, 3.82, 8.333, 0.45,
+        "Make Humans Talk Again  ·  Seed+ Investor Presentation",
+        size=13, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER
     )
 
-    # Center Banrai Logo
-    add_banrai_logo(s1, 4.45, 2.25, size="hero", pal=pal)
-
-    # Main Headline & Counter-trend subheadline
-    add_textbox(
-        s1, 1.5, 3.55, 10.333, 0.75,
-        "Building the World’s First “Fun AI”",
-        font_size=34, bold=True, color=pal["text_primary"],
-        align=PP_ALIGN.CENTER
-    )
-    add_textbox(
-        s1, 2.1, 4.30, 9.133, 0.85,
-        "Delightfully non-functional, AI-native consumer electronics for everyday joy.\nGuided by one quiet conviction: Make Humans Talk Again.",
-        font_size=15, bold=False, color=pal["text_secondary"],
-        align=PP_ALIGN.CENTER, line_spacing=1.45
-    )
-
-    # Bottom 3 subtle summary pills
-    pills_s1 = [
-        ("100% Subscription-Native", "SaaS economics on physical hardware"),
-        ("< 9 Months · $150K–$200K", "Concept to first 1,000 US units"),
-        ("6–10 Products / Year", "Multi-brand portfolio on one backend"),
+    # 3 Minimal Stat Pills at bottom — only middle/key one uses bright lime callout
+    s1_stats = [
+        ("100% Hard-Subscription", "SaaS recurring model", PAL["card_stone"], PAL["border_subtle"]),
+        ("< 9 Mos  ·  $150K–$200K", "Concept to 1,000 US units", PAL["callout_lime"], PAL["callout_lime_border"]),
+        ("6–10 Products / Year", "Powered by 1 shared backend", PAL["card_stone"], PAL["border_subtle"]),
     ]
-    for i, (p_title, p_sub) in enumerate(pills_s1):
-        x = 1.35 + i * 3.65
-        add_card(s1, x, 5.65, 3.35, 1.05, fill_color=pal["card_bg"], border_color=pal["card_border"])
-        add_textbox(s1, x + 0.22, 5.82, 2.9, 0.32, p_title, font_size=12, bold=True, color=pal["accent_lime"], align=PP_ALIGN.CENTER)
-        add_textbox(s1, x + 0.22, 6.18, 2.9, 0.32, p_sub, font_size=10.5, bold=False, color=pal["text_secondary"], align=PP_ALIGN.CENTER)
+    for i, (big, sub, bg_c, brd_c) in enumerate(s1_stats):
+        x = 1.65 + i * 3.45
+        add_box(s1, x, 4.95, 3.15, 1.15, fill_color=bg_c, border_color=brd_c, radius=0.08)
+        add_text(s1, x + 0.15, 5.18, 2.85, 0.35, big, size=13, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+        add_text(s1, x + 0.15, 5.55, 2.85, 0.30, sub, size=10.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
 
-    # =========================================================================
-    # SLIDE 2: THE COUNTER-TREND THESIS (FUN AI VS FUNCTIONAL AI)
-    # =========================================================================
-    s2 = prs.slides.add_slide(blank_layout)
-    add_bg(s2, prs, bgs[1])
-    add_slide_header(
-        s2,
-        eyebrow="01 · The Philosophy",
-        title="Everyone Is Building Functional AI. We Build Fun AI.",
-        subtitle="In a sense, we are building the most 'useless' AI in the world—because human life isn’t a productivity spreadsheet.",
-        pal=pal, slide_num=2
-    )
+    # ==========================================================================
+    # SLIDE 2: THE COUNTER-TREND — VISUAL POSITIONING GRAPHIC
+    # ==========================================================================
+    s2 = prs.slides.add_slide(blank)
+    add_header(s2, "01 · Category Positioning", "Everyone Builds Functional AI. We Build Fun AI.", "02 / 07")
 
-    # Left Card: The Industry Default (Functional AI)
-    add_card(s2, 0.85, 2.20, 5.55, 3.65, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_pill_badge(s2, 1.20, 2.50, 2.35, 0.32, "THE INDUSTRY CROWD", bg_color=pal["card_bg_alt"], text_color=pal["text_muted"], font_size=9)
-    add_textbox(s2, 1.20, 2.98, 4.8, 0.45, "Functional AI", font_size=22, bold=True, color=pal["text_secondary"])
-    add_bullet_list(
-        s2, 1.20, 3.55, 4.85, 2.0,
-        [
-            ("Task-Obsessed:", "Built to write emails, summarize meetings, and shave seconds off workflows."),
-            ("Utility Mindset:", "Users only engage when they have a chore or work problem to solve."),
-            ("Commoditized Race:", "Competing head-on with tech giants on raw benchmark utility."),
-        ],
-        pal=pal, accent_color=pal["text_muted"], font_size=12, spacing=12
-    )
+    # Left: Visual 2x2 Positioning Matrix Graphic
+    add_box(s2, 0.90, 1.75, 6.80, 4.90, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_text(s2, 1.25, 2.00, 6.10, 0.30, "CONSUMER AI LANDSCAPE", size=9.5, bold=True, color=PAL["ink_muted"])
 
-    # Right Card: The Banrai Counter-Trend (Fun AI)
-    add_card(s2, 6.75, 2.20, 5.73, 3.65, fill_color=pal["card_bg_alt"], border_color=pal["accent_lime"], border_pt=1.5)
-    add_pill_badge(s2, 7.10, 2.50, 2.20, 0.32, "✦  OUR CATEGORY", bg_color=pal["pill_bg"], text_color=pal["pill_text"], font_size=9)
-    add_textbox(s2, 7.10, 2.98, 5.0, 0.45, "Fun AI (Delightfully “Useless”)", font_size=22, bold=True, color=pal["text_primary"])
-    add_bullet_list(
-        s2, 7.10, 3.55, 5.0, 2.0,
-        [
-            ("Joy & Curiosity First:", "Built for moments of wonder, play, storytelling, and emotional warmth."),
-            ("Ambient Daily Presence:", "Lives across diverse brands & tactile form factors in everyday life."),
-            ("Zero Utility Pressure:", "No tasks to optimize—just companions that spark smiles and dialogue."),
-        ],
-        pal=pal, accent_color=pal["accent_lime"], font_size=12, spacing=12
-    )
+    # Horizontal & Vertical Axes inside the matrix card
+    # Horizontal bar (Work/Tasks <---> Joy/Play)
+    add_box(s2, 1.50, 4.30, 5.60, 0.03, fill_color=PAL["border_strong"], shape_type=MSO_SHAPE.RECTANGLE)
+    # Vertical bar (Screen Apps <---> Tactile Hardware)
+    add_box(s2, 4.30, 2.45, 0.03, 3.70, fill_color=PAL["border_strong"], shape_type=MSO_SHAPE.RECTANGLE)
 
-    # Bottom Theme Banner: "Make Humans Talk Again"
-    add_card(s2, 0.85, 6.05, 11.63, 0.82, fill_color=pal["card_bg"], border_color=pal["accent_mint"], border_pt=1.0)
-    add_textbox(
-        s2, 1.15, 6.18, 3.3, 0.32, "UNIFYING THEME ·",
-        font_size=10, bold=True, color=pal["accent_mint"]
-    )
-    add_textbox(
-        s2, 1.15, 6.40, 3.8, 0.35, "“Make Humans Talk Again”",
-        font_size=14, bold=True, color=pal["text_primary"]
-    )
-    add_textbox(
-        s2, 4.65, 6.20, 7.6, 0.55,
-        "After a decade of passive smartphone scrolling, our unifying theme inspires active voice, curiosity, and conversation—while letting every product share a single conversational AI backend.",
-        font_size=11.5, bold=False, color=pal["text_secondary"], line_spacing=1.28
-    )
+    # Axis Labels
+    add_text(s2, 1.45, 4.40, 1.8, 0.28, "← Work & Tasks", size=9.5, bold=True, color=PAL["ink_muted"])
+    add_text(s2, 5.30, 4.40, 1.8, 0.28, "Play & Daily Joy →", size=9.5, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.RIGHT)
+    add_text(s2, 3.40, 2.15, 1.8, 0.28, "↑ Tactile Hardware", size=9.5, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+    add_text(s2, 3.40, 6.22, 1.8, 0.28, "↓ Screen Chatbots", size=9.5, bold=True, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
 
-    # =========================================================================
-    # SLIDE 3: BUSINESS MODEL — HARDWARE-ENABLED SAAS
-    # =========================================================================
-    s3 = prs.slides.add_slide(blank_layout)
-    add_bg(s3, prs, bgs[2])
-    add_slide_header(
-        s3,
-        eyebrow="02 · Business Model",
-        title="Hardware as the Vessel. SaaS as the Engine.",
-        subtitle="Because our products are truly AI-native and consume live tokens, every device operates on a hard monthly subscription.",
-        pal=pal, slide_num=3
-    )
+    # Bottom-Left Quadrant: Crowded Red Ocean
+    add_box(s2, 1.65, 4.75, 2.35, 1.20, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.08)
+    add_text(s2, 1.80, 4.92, 2.05, 0.30, "Functional AI Crowd", size=11, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+    add_text(s2, 1.80, 5.25, 2.05, 0.50, "Emails, coding, productivity\n(99% of VC & Big Tech)", size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
 
-    # Top Comparison Strip: Traditional Hardware vs Banrai Model
-    add_card(s3, 0.85, 2.15, 5.55, 1.95, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_textbox(s3, 1.15, 2.35, 5.0, 0.35, "Traditional Consumer Hardware", font_size=15, bold=True, color=pal["text_secondary"])
-    add_bullet_list(
-        s3, 1.15, 2.78, 5.0, 1.2,
-        [
-            ("One-Time Margin:", "Profit stops the day the box is sold."),
-            ("Upgrade Treadmill:", "Forced to push Gen-2 hardware or chase new unit buyers to survive."),
-        ],
-        pal=pal, accent_color=pal["text_muted"], font_size=11.5, spacing=8
-    )
+    # Top-Left Quadrant: Generic AI Pins
+    add_box(s2, 1.65, 2.75, 2.35, 1.20, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.08)
+    add_text(s2, 1.80, 2.95, 2.05, 0.30, "Utility Wearables", size=11, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+    add_text(s2, 1.80, 3.28, 2.05, 0.50, "Trying to replace the smartphone", size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
 
-    add_card(s3, 6.75, 2.15, 5.73, 1.95, fill_color=pal["card_bg_alt"], border_color=pal["accent_lime"], border_pt=1.5)
-    add_textbox(s3, 7.05, 2.35, 5.1, 0.35, "Banrai Hard-Subscription Model", font_size=15, bold=True, color=pal["accent_lime"])
-    add_bullet_list(
-        s3, 7.05, 2.78, 5.1, 1.2,
-        [
-            ("No Free Tier:", "Real token consumption requires sustainable recurring revenue."),
-            ("Pure SaaS Alignment:", "We win by delivering continuous daily delight that retains subscribers."),
-        ],
-        pal=pal, accent_color=pal["accent_lime"], font_size=11.5, spacing=8
-    )
+    # Top-Right Quadrant: BANRAI (Single Bright Lime Hero Callout!)
+    add_box(s2, 4.60, 2.65, 2.45, 1.40, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], border_pt=1.5, radius=0.08)
+    add_text(s2, 4.75, 2.85, 2.15, 0.35, "Banrai · “Fun AI”", size=13, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(s2, 4.75, 3.22, 2.15, 0.65, "Delightfully “useless” hardware for daily joy & conversation", size=10, bold=False, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
 
-    # Bottom 3 Step Flow Cards
-    steps_s3 = [
-        ("01 · Tactile Entry", "Hardware + Bundled Months", "Every device ships with several complimentary months of subscription—eliminating friction at first touch.", pal["accent_lime"]),
-        ("02 · Daily Habit", "Hard Monthly Subscription", "To keep the companion alive after the trial period, users subscribe monthly—aligning token costs with high-margin recurring revenue.", pal["accent_mint"]),
-        ("03 · SaaS Compounding", "Continuous Value Delivery", "Instead of pushing hardware replacements, our backend continuously evolves stories, personalities, and experiences.", pal["accent_lavender"]),
+    # Right Column: 3 Crisp Essence Cards
+    essence_cards = [
+        ("01 · Counter-Trend", "Delightfully “Useless”", "Zero task optimization. Built purely for curiosity, laughter, and warmth.", PAL["card_white"]),
+        ("02 · Unifying Theme", "“Make Humans Talk Again”", "Replaces passive screen scrolling with active voice, stories, and imagination.", PAL["card_sage"]),
+        ("03 · Multi-Brand Strategy", "Ambient in Every Room", "Different brands & form factors—from bedside clocks to living room frames.", PAL["card_white"]),
     ]
-    for i, (tag, head, desc, col) in enumerate(steps_s3):
-        x = 0.85 + i * 3.94
-        add_card(s3, x, 4.38, 3.75, 2.45, fill_color=pal["card_bg"], border_color=col, border_pt=1.1)
-        add_textbox(s3, x + 0.28, 4.62, 3.2, 0.28, tag.upper(), font_size=9.5, bold=True, color=col)
-        add_textbox(s3, x + 0.28, 4.95, 3.2, 0.38, head, font_size=15, bold=True, color=pal["text_primary"])
-        add_textbox(s3, x + 0.28, 5.42, 3.2, 1.2, desc, font_size=11.5, bold=False, color=pal["text_secondary"], line_spacing=1.35)
+    for i, (tag, head, desc, bg_c) in enumerate(essence_cards):
+        y = 1.75 + i * 1.68
+        add_box(s2, 8.00, y, 4.43, 1.50, fill_color=bg_c, border_color=PAL["border_subtle"], radius=0.05)
+        add_text(s2, 8.28, y + 0.20, 3.9, 0.25, tag.upper(), size=9, bold=True, color=PAL["sage_accent"])
+        add_text(s2, 8.28, y + 0.46, 3.9, 0.35, head, size=15, bold=True, color=PAL["ink_primary"])
+        add_text(s2, 8.28, y + 0.85, 3.9, 0.50, desc, size=10.5, bold=False, color=PAL["ink_secondary"])
 
-    # =========================================================================
-    # SLIDE 4: THE UNFAIR ADVANTAGE — UNIFIED BACKEND & RAPID HARDWARE ENGINE
-    # =========================================================================
-    s4 = prs.slides.add_slide(blank_layout)
-    add_bg(s4, prs, bgs[3])
-    add_slide_header(
-        s4,
-        eyebrow="03 · Unfair Advantage & Unit Economics",
-        title="Many Form Factors. One Unified AI & Subscription OS.",
-        subtitle="Single-product hardware startups must sell 10M+ units to win. Our portfolio model wins at 100K+ units per line.",
-        pal=pal, slide_num=4
-    )
+    # ==========================================================================
+    # SLIDE 3: BUSINESS MODEL — VISUAL REVENUE & LIFECYCLE DIAGRAM
+    # ==========================================================================
+    s3 = prs.slides.add_slide(blank)
+    add_header(s3, "02 · Business Model", "Hardware Is the Vessel. SaaS Is the Engine.", "03 / 07")
 
-    # 4 Big Metric Cards across the top
-    metrics = [
-        ("< 9 Months", "Concept to 1,000 Units", "Total cycle from initial idea to first 1,000 units landing in the US.", pal["accent_lime"]),
-        ("$150K–$200K", "All-In Launch CapEx", "Total R&D + tooling + COGS for the first 1,000 US units per product.", pal["accent_mint"]),
-        ("100K+ Units", "Success Threshold", "Profitable scale per product line—no 10M-unit single-product gamble.", pal["accent_lavender"]),
-        ("100% US Market", "Focused Go-To-Market", "Exclusively built and launched for US consumers with high subscription LTV.", pal["accent_amber"]),
+    # Top: Traditional Hardware (Muted Visual Track)
+    add_box(s3, 0.90, 1.80, 11.53, 1.95, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.04)
+    add_text(s3, 1.25, 2.02, 3.2, 0.28, "TRADITIONAL HARDWARE", size=9.5, bold=True, color=PAL["ink_muted"])
+    add_text(s3, 1.25, 2.30, 3.2, 0.40, "One-Time Unit Margin", size=17, bold=True, color=PAL["ink_secondary"])
+    add_text(s3, 1.25, 2.75, 3.2, 0.65, "Profit stops at checkout. Forced to push Gen-2 upgrades to survive.", size=10.5, bold=False, color=PAL["ink_muted"])
+
+    # Visual Timeline Blocks for Traditional Hardware
+    trad_steps = [
+        ("Day 1: Sell Box", "One-off hardware margin"),
+        ("Month 2–12", "$0 recurring revenue"),
+        ("Year 2+", "Beg user to buy Gen-2"),
     ]
-    for i, (big_num, m_title, m_desc, col) in enumerate(metrics):
-        x = 0.85 + i * 2.95
-        add_card(s4, x, 2.15, 2.78, 2.30, fill_color=pal["card_bg"], border_color=pal["card_border"])
-        add_textbox(s4, x + 0.22, 2.38, 2.34, 0.55, big_num, font_size=24, bold=True, color=col)
-        add_textbox(s4, x + 0.22, 3.00, 2.34, 0.35, m_title, font_size=12.5, bold=True, color=pal["text_primary"])
-        add_textbox(s4, x + 0.22, 3.38, 2.34, 0.90, m_desc, font_size=10.5, bold=False, color=pal["text_secondary"], line_spacing=1.3)
+    for i, (t_head, t_sub) in enumerate(trad_steps):
+        tx = 4.75 + i * 2.50
+        add_box(s3, tx, 2.18, 2.25, 1.20, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.06)
+        add_text(s3, tx + 0.15, 2.42, 1.95, 0.30, t_head, size=11.5, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+        add_text(s3, tx + 0.15, 2.78, 1.95, 0.40, t_sub, size=10, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
+        if i < 2:
+            add_text(s3, tx + 2.25, 2.60, 0.25, 0.30, "→", size=14, bold=True, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
 
-    # Architecture / Shared Backend Visual Diagram at Bottom
-    add_card(s4, 0.85, 4.72, 11.63, 2.10, fill_color=pal["card_bg_alt"], border_color=pal["accent_lime"], border_pt=1.25)
-    add_textbox(
-        s4, 1.20, 4.95, 4.2, 0.35,
-        "THE BANRAI SHARED CORE",
-        font_size=10.5, bold=True, color=pal["accent_lime"]
-    )
-    add_textbox(
-        s4, 1.20, 5.25, 4.4, 0.75,
-        "Unified AI + Subscription Backend",
-        font_size=20, bold=True, color=pal["text_primary"]
-    )
-    add_textbox(
-        s4, 1.20, 5.75, 4.4, 0.85,
-        "Reused across every brand & device—slashing engineering time, initial CapEx, and ongoing maintenance.",
-        font_size=11.5, bold=False, color=pal["text_secondary"], line_spacing=1.32
-    )
+    # Bottom: Banrai Hard-Subscription Model (Visual SaaS Flow)
+    add_box(s3, 0.90, 4.05, 11.53, 2.60, fill_color=PAL["card_white"], border_color=PAL["sage_accent"], border_pt=1.5, radius=0.04)
+    add_text(s3, 1.25, 4.32, 3.2, 0.28, "THE BANRAI MODEL", size=9.5, bold=True, color=PAL["sage_accent"])
+    add_text(s3, 1.25, 4.60, 3.2, 0.45, "100% Hard-Subscription", size=19, bold=True, color=PAL["ink_primary"])
+    add_text(s3, 1.25, 5.10, 3.2, 1.10, "Real AI costs tokens—so there is no free tier. Hardware unlocks high-margin, SaaS-style recurring revenue.", size=10.5, bold=False, color=PAL["ink_secondary"])
 
-    # 3 Modules on the right of the architecture box
-    modules = [
-        ("Voice & Dialogue Engine", "Low-latency speech, memory & persona orchestration"),
-        ("Generative Media Pipeline", "Live image, animation & story synthesis on tap"),
-        ("Hard-Subscription Billing OS", "Unified token metering, trial bundling & recurring billing"),
+    banrai_steps = [
+        ("01 · Unbox", "Hardware + Free Months", "Ships with bundled trial months for instant magic", PAL["card_sage"], PAL["border_subtle"]),
+        ("02 · Subscribe", "Mandatory Monthly Fee", "Hard subscription keeps the AI companion alive", PAL["callout_lime"], PAL["callout_lime_border"]),
+        ("03 · Compound", "Continuous SaaS Value", "Cloud updates stories & memory—growing LTV", PAL["card_sage"], PAL["border_subtle"]),
     ]
-    for i, (m_name, m_sub) in enumerate(modules):
-        mx = 5.95 + i * 2.08
-        add_card(s4, mx, 5.00, 1.95, 1.55, fill_color=pal["card_bg"], border_color=pal["card_border"])
-        add_textbox(s4, mx + 0.16, 5.18, 1.63, 0.50, m_name, font_size=11.5, bold=True, color=pal["text_primary"], line_spacing=1.2)
-        add_textbox(s4, mx + 0.16, 5.75, 1.63, 0.68, m_sub, font_size=9.5, bold=False, color=pal["text_secondary"], line_spacing=1.25)
+    for i, (b_tag, b_head, b_sub, bg_c, brd_c) in enumerate(banrai_steps):
+        bx = 4.75 + i * 2.50
+        add_box(s3, bx, 4.35, 2.25, 2.00, fill_color=bg_c, border_color=brd_c, border_pt=1.25, radius=0.06)
+        add_text(s3, bx + 0.15, 4.58, 1.95, 0.25, b_tag.upper(), size=9, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+        add_text(s3, bx + 0.15, 4.88, 1.95, 0.45, b_head, size=12, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+        add_text(s3, bx + 0.15, 5.42, 1.95, 0.70, b_sub, size=9.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+        if i < 2:
+            add_text(s3, bx + 2.25, 5.15, 0.25, 0.30, "→", size=14, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.CENTER)
 
-    # =========================================================================
-    # SLIDE 5: LAUNCHING DEC 2026 (FIRST 1,000 UNITS EACH IN US MARKET)
-    # =========================================================================
-    s5 = prs.slides.add_slide(blank_layout)
-    add_bg(s5, prs, bgs[4])
-    add_slide_header(
-        s5,
-        eyebrow="04 · Launching December 2026 · 1,000 US Units Each",
-        title="Wave 1 Products: On Schedule & Within Budget",
-        subtitle="Our first two hardware lines hit the US market in Dec 2026 (1,000 units each), tracking at or below our $150K–$200K target.",
-        pal=pal, slide_num=5
-    )
+    # ==========================================================================
+    # SLIDE 4: UNFAIR ADVANTAGE — HUB & SPOKE ARCHITECTURE + COST GRAPHIC
+    # ==========================================================================
+    s4 = prs.slides.add_slide(blank)
+    add_header(s4, "03 · Unfair Advantage", "One Shared Backend Powers Dozens of Hardware Products.", "04 / 07")
 
-    # Left Column: Product 1 — Living Photo Frame
-    add_card(s5, 0.85, 2.12, 5.65, 4.75, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_image_placeholder(
-        s5, 1.10, 2.32, 5.15, 2.45,
-        "[ Product Image Placeholder · Magical Photo Frame ]",
-        "Drop static or animated concept asset here (16:9 / 4:3)",
-        pal=pal, accent_color=pal["accent_lime"]
-    )
-    add_pill_badge(s5, 1.10, 4.92, 1.95, 0.28, "DEC 2026 · 1,000 UNITS", bg_color=pal["pill_bg"], text_color=pal["pill_text"], font_size=8.5)
-    add_textbox(s5, 1.10, 5.28, 5.15, 0.38, "Magical Living Photo Frame", font_size=17, bold=True, color=pal["text_primary"])
-    add_bullet_list(
-        s5, 1.10, 5.68, 5.15, 1.05,
-        [
-            ("Harry Potter-Style Portraits:", "Turns a single uploaded photo into living, context-aware animation bundles."),
-            ("Presence & Weather Aware:", "Waves hello as you walk by—or opens an umbrella inside the photo when it rains outside."),
-        ],
-        pal=pal, accent_color=pal["accent_lime"], font_size=11, spacing=6
-    )
+    # LEFT SIDE: Visual Hub-and-Spoke Diagram (1 Backend -> Many Hardware Form Factors)
+    add_box(s4, 0.90, 1.75, 6.75, 4.95, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_text(s4, 1.20, 1.98, 6.15, 0.28, "REUSABLE PLATFORM ARCHITECTURE", size=9.5, bold=True, color=PAL["sage_accent"])
 
-    # Right Column: Product 2 — Pocket Interactive Bible
-    add_card(s5, 6.83, 2.12, 5.65, 4.75, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_image_placeholder(
-        s5, 7.08, 2.32, 5.15, 2.45,
-        "[ Product Image Placeholder · Pocket Interactive Bible ]",
-        "Drop E-Ink handheld hardware render / photo here",
-        pal=pal, accent_color=pal["accent_mint"]
-    )
-    add_pill_badge(s5, 7.08, 4.92, 1.95, 0.28, "DEC 2026 · 1,000 UNITS", bg_color=pal["pill_bg"], text_color=pal["pill_text"], font_size=8.5)
-    add_textbox(s5, 7.08, 5.28, 5.15, 0.38, "Pocket Interactive Bible", font_size=17, bold=True, color=pal["text_primary"])
-    add_bullet_list(
-        s5, 7.08, 5.68, 5.15, 1.05,
-        [
-            ("Standalone E-Ink + 4G:", "Dedicated, distraction-free sanctuary with built-in cellular connectivity."),
-            ("Trusted Christian Companion:", "Never lectures; deepens faith and Scripture understanding through warm daily dialogue."),
-        ],
-        pal=pal, accent_color=pal["accent_mint"], font_size=11, spacing=6
-    )
+    # Central Hub Box (Left-Center of diagram)
+    add_box(s4, 1.25, 2.65, 2.45, 3.45, fill_color=PAL["card_sage"], border_color=PAL["sage_accent"], border_pt=1.5, radius=0.05)
+    add_text(s4, 1.40, 2.90, 2.15, 0.30, "SHARED CORE", size=9, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.CENTER)
+    add_text(s4, 1.40, 3.20, 2.15, 0.65, "1 Unified AI +\nBilling Backend", size=15, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
 
-    # =========================================================================
-    # SLIDE 6: H1 2027 PIPELINE (PART 1: DREAM PRINTER & VOICE WALKIE-TALKIE)
-    # =========================================================================
-    s6 = prs.slides.add_slide(blank_layout)
-    add_bg(s6, prs, bgs[5])
-    add_slide_header(
-        s6,
-        eyebrow="05 · H1 2027 Pipeline · Currently in Prototyping",
-        title="Wave 2: Capturing Morning Wonder & Voice Play",
-        subtitle="Expanding into new daily rituals—from the moment you wake up to tactile, screen-free voice gaming.",
-        pal=pal, slide_num=6
-    )
+    hub_pills = ["Conversational Voice OS", "Image & Story Engine", "Subscription & Metering"]
+    for i, hp in enumerate(hub_pills):
+        hy = 4.10 + i * 0.58
+        add_box(s4, 1.42, hy, 2.11, 0.44, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.08)
+        add_text(s4, 1.48, hy + 0.10, 1.99, 0.26, hp, size=9.5, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
 
-    # Left Column: Product 3 — Dream Printer
-    add_card(s6, 0.85, 2.12, 5.65, 4.75, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_image_placeholder(
-        s6, 1.10, 2.32, 5.15, 2.45,
-        "[ Product Image Placeholder · Dream Printer ]",
-        "Drop bedside alarm-clock form factor & dream diary UI image here",
-        pal=pal, accent_color=pal["accent_lavender"]
-    )
-    add_pill_badge(s6, 1.10, 4.92, 2.15, 0.28, "H1 2027 · PROTOTYPING", bg_color=pal["card_bg_alt"], text_color=pal["accent_lavender"], font_size=8.5)
-    add_textbox(s6, 1.10, 5.28, 5.15, 0.38, "Dream Printer", font_size=17, bold=True, color=pal["text_primary"])
-    add_bullet_list(
-        s6, 1.10, 5.68, 5.15, 1.05,
-        [
-            ("One-Press Morning Ritual:", "Wake up, press a button, and speak your dream aloud; generates dream art + audio transcript."),
-            ("Living Dream Diary:", "Co-weaves fragments into stories and surfaces hidden threads across past dreams."),
-        ],
-        pal=pal, accent_color=pal["accent_lavender"], font_size=11, spacing=6
-    )
-
-    # Right Column: Product 4 — Walkie-Talkie Voice Game
-    add_card(s6, 6.83, 2.12, 5.65, 4.75, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_image_placeholder(
-        s6, 7.08, 2.32, 5.15, 2.45,
-        "[ Product Image Placeholder · Voice Adventure Walkie-Talkie ]",
-        "Drop handheld walkie-talkie gaming hardware image here",
-        pal=pal, accent_color=pal["accent_amber"]
-    )
-    add_pill_badge(s6, 7.08, 4.92, 2.15, 0.28, "H1 2027 · PROTOTYPING", bg_color=pal["card_bg_alt"], text_color=pal["accent_amber"], font_size=8.5)
-    add_textbox(s6, 7.08, 5.28, 5.15, 0.38, "Tactile Voice Gaming Walkie-Talkie", font_size=17, bold=True, color=pal["text_primary"])
-    add_bullet_list(
-        s6, 7.08, 5.68, 5.15, 1.05,
-        [
-            ("A Stranded Friend on the Line:", "A live character trapped on an alien planet or escape room calls for your help."),
-            ("100% Voice Co-Op:", "Calm them down, guide exploration, and solve unfolding incidents together to advance."),
-        ],
-        pal=pal, accent_color=pal["accent_amber"], font_size=11, spacing=6
-    )
-
-    # =========================================================================
-    # SLIDE 7: H1 2027 PIPELINE (PART 2: E-INK CHILDREN'S DOODLE BOARD)
-    # =========================================================================
-    s7 = prs.slides.add_slide(blank_layout)
-    add_bg(s7, prs, bgs[6])
-    add_slide_header(
-        s7,
-        eyebrow="06 · H1 2027 Pipeline · Currently in Prototyping",
-        title="Wave 2 Spotlight: E-Ink Children’s Story Doodle Pad",
-        subtitle="How children should experience AI—long before they even know what 'AI' means.",
-        pal=pal, slide_num=7
-    )
-
-    # Spacious Split Layout: Left Story & Interaction Pillars, Right Large Visual Placeholder
-    add_card(s7, 0.85, 2.15, 5.15, 4.70, fill_color=pal["card_bg"], border_color=pal["card_border"])
-    add_pill_badge(s7, 1.15, 2.42, 2.25, 0.30, "H1 2027 · PROTOTYPING", bg_color=pal["pill_bg"], text_color=pal["pill_text"], font_size=8.5)
-    add_textbox(s7, 1.15, 2.88, 4.55, 0.45, "Eye-Friendly E-Ink Doodle Pad", font_size=20, bold=True, color=pal["text_primary"])
-    add_textbox(
-        s7, 1.15, 3.38, 4.55, 0.65,
-        "A calm, paper-like canvas that meets every child’s sketch or handwritten curiosity on their own terms.",
-        font_size=12, bold=False, color=pal["text_secondary"], line_spacing=1.35
-    )
-    add_bullet_list(
-        s7, 1.15, 4.18, 4.55, 2.45,
-        [
-            ("Doodle-to-Comic Co-Creation:", "Turns a child’s sketch into the opening scene of a multi-panel comic story—collaborating back and forth."),
-            ("Visual Q&A by Drawing:", "Kids can jot down a question or draw what they’re wondering about and receive a gentle, illustrated answer."),
-            ("Screen-Time Without Burnout:", "Glare-free E-Ink hardware built for open-ended imagination, not addictive video loops."),
-        ],
-        pal=pal, accent_color=pal["accent_mint"], font_size=11.5, spacing=10
-    )
-
-    # Right Extra-Large Image Placeholder
-    add_image_placeholder(
-        s7, 6.28, 2.15, 6.20, 4.70,
-        "[ Hero Image Placeholder · E-Ink Kids’ Story Doodle Pad ]",
-        "Drop large product photo + sample child doodle-to-comic interaction here",
-        pal=pal, accent_color=pal["accent_mint"]
-    )
-
-    # =========================================================================
-    # SLIDE 8: THE DATA MOAT & 6–10 PRODUCTS/YEAR FLYWHEEL
-    # =========================================================================
-    s8 = prs.slides.add_slide(blank_layout)
-    add_bg(s8, prs, bgs[7])
-    add_slide_header(
-        s8,
-        eyebrow="07 · The Compounding Moat",
-        title="Capturing the Data That Doesn’t Exist on the Internet",
-        subtitle="Public web data teaches AI how to work. Only our hardware portfolio captures how humans play, wonder, and laugh.",
-        pal=pal, slide_num=8
-    )
-
-    # 3 Connected Flywheel Columns
-    flywheel = [
-        (
-            "STEP 01 · PORTFOLIO PACE",
-            "6–10 New Products / Year",
-            "Backed by a deep backlog of form factors, we launch 6–10 distinct Fun AI devices every year on our shared backend.",
-            "Low $150K–$200K CapEx per bet",
-            pal["accent_lime"]
-        ),
-        (
-            "STEP 02 · PROPRIETARY SIGNALS",
-            "Spontaneous Joy & Play Data",
-            "We capture how people interact with AI when seeking happiness, stories, and companionship—signals absent from the open web.",
-            "100% exclusive first-party telemetry",
-            pal["accent_mint"]
-        ),
-        (
-            "STEP 03 · COMPOUNDING LEAD",
-            "The Only Real “Fun AI” Model",
-            "Every conversation across every device makes our shared backend wittier, warmer, and more human—widening our moat daily.",
-            "Higher retention & subscription LTV",
-            pal["accent_lavender"]
-        ),
+    # Connector lines + 6 Spoke Product Nodes on the right of the Hub
+    spokes = [
+        ("01 · Living Photo Frame", "Dec 2026"),
+        ("02 · Pocket Interactive Bible", "Dec 2026"),
+        ("03 · Dream Printer", "H1 2027"),
+        ("04 · Voice Walkie-Talkie", "H1 2027"),
+        ("05 · Kids’ E-Ink Doodle Pad", "H1 2027"),
+        ("06–10+ · New Launches / Yr", "Ongoing Pipeline"),
     ]
-    for i, (f_step, f_title, f_body, f_foot, col) in enumerate(flywheel):
-        x = 0.85 + i * 3.94
-        add_card(s8, x, 2.20, 3.75, 4.55, fill_color=pal["card_bg"], border_color=col, border_pt=1.2)
-        add_textbox(s8, x + 0.30, 2.50, 3.15, 0.30, f_step, font_size=9.5, bold=True, color=col)
-        add_textbox(s8, x + 0.30, 2.90, 3.15, 0.70, f_title, font_size=19, bold=True, color=pal["text_primary"], line_spacing=1.2)
-        add_textbox(s8, x + 0.30, 3.75, 3.15, 1.65, f_body, font_size=12, bold=False, color=pal["text_secondary"], line_spacing=1.4)
+    for i, (s_name, s_date) in enumerate(spokes):
+        sy = 2.45 + i * 0.65
+        # Horizontal connector line from Hub to Spoke
+        add_box(s4, 3.70, sy + 0.24, 0.65, 0.02, fill_color=PAL["sage_accent"], shape_type=MSO_SHAPE.RECTANGLE)
+        # Spoke Node
+        is_last = (i == 5)
+        node_bg = PAL["card_stone"] if not is_last else PAL["card_slate"]
+        add_box(s4, 4.35, sy, 2.95, 0.50, fill_color=node_bg, border_color=PAL["border_subtle"], radius=0.08)
+        add_text(s4, 4.50, sy + 0.13, 1.95, 0.26, s_name, size=10, bold=True, color=PAL["ink_primary"])
+        add_text(s4, 6.30, sy + 0.14, 0.88, 0.24, s_date, size=8.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.RIGHT)
 
-        # Bottom highlight pill inside each card
-        add_card(s8, x + 0.28, 5.85, 3.19, 0.55, fill_color=pal["card_bg_alt"], border_color=pal["card_border"])
-        add_textbox(
-            s8, x + 0.38, 5.98, 2.99, 0.30, f_foot,
-            font_size=10.5, bold=True, color=col, align=PP_ALIGN.CENTER
-        )
+    # RIGHT SIDE: Visual Cost & Speed Comparison Bars
+    add_box(s4, 7.90, 1.75, 4.53, 4.95, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_text(s4, 8.20, 1.98, 3.95, 0.28, "ECONOMICS PER HARDWARE LINE (US MARKET)", size=9.5, bold=True, color=PAL["ink_muted"])
 
-    # =========================================================================
-    # SLIDE 9: CLOSING / SUMMARY SLIDE
-    # =========================================================================
-    s9 = prs.slides.add_slide(blank_layout)
-    add_bg(s9, prs, bgs[8])
-    add_slide_header(
-        s9,
-        eyebrow="08 · The Banrai Opportunity",
-        title="Delightfully Useless. Commercially Unstoppable.",
-        subtitle="A counter-trend consumer AI ecosystem built for recurring subscription scale.",
-        pal=pal, slide_num=9
+    # Comparison 1: Time to First 1,000 US Units
+    add_text(s4, 8.20, 2.40, 3.95, 0.28, "Time to Market (First 1,000 Units)", size=11, bold=True, color=PAL["ink_primary"])
+    add_box(s4, 8.20, 2.74, 3.85, 0.34, fill_color=PAL["card_stone"], shape_type=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.1)
+    add_text(s4, 8.32, 2.80, 3.60, 0.24, "Traditional Hardware:  18 – 24+ Months", size=9.5, bold=False, color=PAL["ink_secondary"])
+    # Banrai Short Bar
+    add_box(s4, 8.20, 3.16, 1.85, 0.36, fill_color=PAL["card_sage"], border_color=PAL["sage_accent"], shape_type=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.1)
+    add_text(s4, 8.32, 3.22, 1.65, 0.24, "Banrai: < 9 Mos", size=10, bold=True, color=PAL["ink_primary"])
+
+    # Comparison 2: Total CapEx to Launch 1,000 US Units (BRIGHT LIME HERO CALLOUT!)
+    add_text(s4, 8.20, 3.78, 3.95, 0.28, "All-In Launch Cost (R&D + First 1,000 Units)", size=11, bold=True, color=PAL["ink_primary"])
+    add_box(s4, 8.20, 4.12, 3.85, 0.34, fill_color=PAL["card_stone"], shape_type=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.1)
+    add_text(s4, 8.32, 4.18, 3.60, 0.24, "Traditional Hardware:  $3M – $10M+", size=9.5, bold=False, color=PAL["ink_secondary"])
+    # Banrai Callout Bar
+    add_box(s4, 8.20, 4.54, 2.35, 0.40, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], border_pt=1.5, shape_type=MSO_SHAPE.ROUNDED_RECTANGLE, radius=0.1)
+    add_text(s4, 8.32, 4.61, 2.15, 0.26, "Banrai: $150K – $200K", size=10.5, bold=True, color=PAL["ink_primary"])
+
+    # Comparison 3: Units Needed for a "Hit"
+    add_text(s4, 8.20, 5.20, 3.95, 0.28, "Unit Threshold for a Winner", size=11, bold=True, color=PAL["ink_primary"])
+    add_box(s4, 8.20, 5.54, 3.85, 0.85, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.06)
+    add_text(
+        s4, 8.38, 5.68, 3.50, 0.60,
+        "Single-Product Co: Must sell 10M+ units\nBanrai Portfolio: Profitable hit at 100K+ units",
+        size=10.5, bold=True, color=PAL["ink_primary"], line_spacing=1.35
     )
 
-    summary_cards = [
-        ("White-Space Category", "Fun AI > Functional AI", "Owning daily consumer joy, imagination, and voice companionship while the rest of tech fights over enterprise tasks.", pal["accent_lime"]),
-        ("Disciplined Hardware Engine", "$150K–$200K · < 9 Months", "1,000 US units launched in under 9 months per product—powered by a single reusable AI + subscription backend.", pal["accent_mint"]),
-        ("Immediate US Traction", "2 Launching · 3 Prototyping", "Photo Frame & Pocket Bible shipping Dec 2026 (1K units each); Dream Printer, Walkie-Talkie & Doodle Pad in H1 2027.", pal["accent_lavender"]),
+    # ==========================================================================
+    # SLIDE 5: PRODUCT PORTFOLIO & ROADMAP AT A GLANCE (CONSOLIDATED!)
+    # ==========================================================================
+    s5 = prs.slides.add_slide(blank)
+    add_header(s5, "04 · Product Roadmap (US Market Exclusively)", "5 Products in Motion. 6–10 New Launches Every Year.", "05 / 07")
+
+    # Timeline Header Bar
+    add_box(s5, 0.90, 1.75, 4.45, 0.42, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], radius=0.08)
+    add_text(s5, 1.05, 1.84, 4.15, 0.26, "WAVE 1 · DEC 2026 (1,000 US UNITS EACH · ON BUDGET)", size=9.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+
+    add_box(s5, 5.55, 1.75, 6.88, 0.42, fill_color=PAL["card_sage"], border_color=PAL["sage_accent"], radius=0.08)
+    add_text(s5, 5.70, 1.84, 6.58, 0.26, "WAVE 2 · H1 2027 (CURRENTLY IN PROTOTYPING)", size=9.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+
+    # 5 Clean Visual Product Cards in a 5-Column Strip
+    products_overview = [
+        ("01", "Magical Living\nPhoto Frame", "Dec 2026", "Portraits wave hello & react to live local weather", PAL["card_white"], PAL["callout_lime_border"]),
+        ("02", "Pocket Interactive\nBible", "Dec 2026", "Standalone E-Ink + 4G daily Christian companion", PAL["card_white"], PAL["callout_lime_border"]),
+        ("03", "Dream\nPrinter", "H1 2027", "One-button morning dream art & connected diary", PAL["card_white"], PAL["border_subtle"]),
+        ("04", "Voice Gaming\nWalkie-Talkie", "H1 2027", "Co-op voice rescue with a stranded character", PAL["card_white"], PAL["border_subtle"]),
+        ("05", "Kids’ E-Ink\nDoodle Pad", "H1 2027", "Turns children’s sketches into interactive comics", PAL["card_white"], PAL["border_subtle"]),
     ]
-    for i, (s_tag, s_head, s_desc, col) in enumerate(summary_cards):
-        x = 0.85 + i * 3.94
-        add_card(s9, x, 2.15, 3.75, 2.85, fill_color=pal["card_bg"], border_color=pal["card_border"])
-        add_textbox(s9, x + 0.28, 2.42, 3.2, 0.28, s_tag.upper(), font_size=9.5, bold=True, color=col)
-        add_textbox(s9, x + 0.28, 2.78, 3.2, 0.45, s_head, font_size=16, bold=True, color=pal["text_primary"])
-        add_textbox(s9, x + 0.28, 3.32, 3.2, 1.4, s_desc, font_size=11.5, bold=False, color=pal["text_secondary"], line_spacing=1.38)
+    for i, (num, p_name, p_date, p_hook, bg_c, brd_c) in enumerate(products_overview):
+        px = 0.90 + i * 2.34
+        add_box(s5, px, 2.32, 2.18, 3.45, fill_color=bg_c, border_color=brd_c, border_pt=1.25, radius=0.04)
+        # Mini visual placeholder thumbnail inside each card
+        add_box(s5, px + 0.16, 2.48, 1.86, 1.35, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.06)
+        add_text(s5, px + 0.24, 2.98, 1.70, 0.35, f"[ Photo {num} ]", size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
+        # Product Title & 1-sentence essence
+        add_text(s5, px + 0.18, 3.98, 1.82, 0.24, p_date.upper(), size=8.5, bold=True, color=PAL["sage_accent"])
+        add_text(s5, px + 0.18, 4.22, 1.82, 0.60, p_name, size=13, bold=True, color=PAL["ink_primary"], line_spacing=1.15)
+        add_text(s5, px + 0.18, 4.90, 1.82, 0.75, p_hook, size=9.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.25)
 
-    # Closing Banner
-    add_card(s9, 0.85, 5.30, 11.63, 1.50, fill_color=pal["card_bg_alt"], border_color=pal["accent_lime"], border_pt=1.5)
-    add_banrai_logo(s9, 1.15, 5.65, size="small", pal=pal)
-    add_textbox(
-        s9, 1.25, 6.08, 4.5, 0.38,
-        "Make Humans Talk Again.",
-        font_size=16, bold=True, color=pal["text_primary"]
+    # Bottom Backlog Strip + Pointer to Appendix
+    add_box(s5, 0.90, 5.95, 11.53, 0.72, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.05)
+    add_text(
+        s5, 1.20, 6.18, 7.20, 0.30,
+        "Deep Backlog:  Launching 6–10 new Fun AI hardware products every year.",
+        size=11.5, bold=True, color=PAL["ink_primary"]
     )
-    add_textbox(
-        s9, 6.20, 5.65, 5.9, 0.80,
-        "banrai.ai   ·   hello@banrai.ai\nSeed+ Investor Presentation · US Consumer AI Ecosystem",
-        font_size=12, bold=False, color=pal["text_secondary"],
-        align=PP_ALIGN.RIGHT, line_spacing=1.45
+    add_text(
+        s5, 8.20, 6.19, 3.95, 0.30,
+        "See Appendix (A1–A3) for full product visuals →",
+        size=10.5, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.RIGHT
     )
 
-    out_path = os.path.join(OUT_DIR, output_filename)
-    prs.save(out_path)
-    print(f"Saved: {out_path}")
+    # ==========================================================================
+    # SLIDE 6: THE DATA MOAT — VISUAL FLYWHEEL DIAGRAM
+    # ==========================================================================
+    s6 = prs.slides.add_slide(blank)
+    add_header(s6, "05 · Defensibility & Moat", "Capturing the Data That Doesn’t Exist on the Internet.", "06 / 07")
+
+    # Top Contrast Strip: Public Web Data vs Banrai Data
+    add_box(s6, 0.90, 1.75, 5.60, 1.25, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.04)
+    add_text(s6, 1.20, 1.95, 5.0, 0.25, "PUBLIC INTERNET DATA", size=9, bold=True, color=PAL["ink_muted"])
+    add_text(s6, 1.20, 2.22, 5.0, 0.55, "Teaches AI how to work, code, and summarize.\nEvery competitor scrapes the exact same web.", size=11, bold=False, color=PAL["ink_secondary"])
+
+    add_box(s6, 6.83, 1.75, 5.60, 1.25, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], border_pt=1.5, radius=0.04)
+    add_text(s6, 7.13, 1.95, 5.0, 0.25, "BANRAI PROPRIETARY DATA", size=9, bold=True, color=PAL["ink_primary"])
+    add_text(s6, 7.13, 2.22, 5.0, 0.55, "Captures how humans play, laugh, and wonder.\nZero public dataset exists—it must be earned live.", size=11, bold=True, color=PAL["ink_primary"])
+
+    # Bottom Visual 4-Node Flywheel Diagram
+    fly_nodes = [
+        ("01 · Ship", "6–10 Products / Yr", "Ambient devices across daily life", PAL["card_white"]),
+        ("02 · Spark", "Spontaneous Play", "Users talk for joy, not chores", PAL["card_sage"]),
+        ("03 · Collect", "Exclusive Joy Data", "Un-scrapable emotional signals", PAL["card_white"]),
+        ("04 · Evolve", "Smarter “Fun AI”", "Compounds retention across all SKUs", PAL["card_sage"]),
+    ]
+    for i, (f_step, f_head, f_sub, bg_c) in enumerate(fly_nodes):
+        fx = 0.90 + i * 2.98
+        add_box(s6, fx, 3.45, 2.60, 2.45, fill_color=bg_c, border_color=PAL["border_strong"], radius=0.05)
+        add_text(s6, fx + 0.20, 3.75, 2.20, 0.26, f_step.upper(), size=9.5, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.CENTER)
+        add_text(s6, fx + 0.20, 4.15, 2.20, 0.45, f_head, size=15, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+        add_text(s6, fx + 0.20, 4.70, 2.20, 0.70, f_sub, size=10.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+        if i < 3:
+            add_text(s6, fx + 2.60, 4.45, 0.38, 0.35, "→", size=18, bold=True, color=PAL["sage_accent"], align=PP_ALIGN.CENTER)
+
+    # Feedback loop bar under the 4 nodes
+    add_box(s6, 1.80, 6.12, 9.73, 0.45, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.08)
+    add_text(s6, 2.00, 6.22, 9.33, 0.28, "↺   Continuous Compounding Loop Across Every Brand & Hardware Line", size=10.5, bold=True, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
+
+    # ==========================================================================
+    # SLIDE 7: CLOSING SUMMARY — MINIMAL & MEMORABLE
+    # ==========================================================================
+    s7 = prs.slides.add_slide(blank)
+    add_header(s7, "06 · Summary", "Delightfully “Useless.” Commercially Unstoppable.", "07 / 07")
+
+    pillars = [
+        ("Category of One", "Fun AI > Functional AI", "Owning daily consumer joy & voice while the rest of tech fights over spreadsheets.", PAL["card_white"], PAL["border_subtle"]),
+        ("Asymmetric Hardware Math", "< 9 Mos  ·  $150K–$200K", "1 shared AI + SaaS backend powers 6–10 US hardware launches per year.", PAL["callout_lime"], PAL["callout_lime_border"]),
+        ("Compounding Data Moat", "2 Launching · 3 Prototyping", "2,000 US units shipping Dec 2026; building the only dataset of human play.", PAL["card_white"], PAL["border_subtle"]),
+    ]
+    for i, (p_tag, p_head, p_desc, bg_c, brd_c) in enumerate(pillars):
+        px = 0.90 + i * 3.94
+        add_box(s7, px, 1.85, 3.65, 3.10, fill_color=bg_c, border_color=brd_c, border_pt=1.25, radius=0.04)
+        add_text(s7, px + 0.30, 2.18, 3.05, 0.26, p_tag.upper(), size=9.5, bold=True, color=PAL["ink_secondary"])
+        add_text(s7, px + 0.30, 2.55, 3.05, 0.55, p_head, size=18, bold=True, color=PAL["ink_primary"])
+        add_text(s7, px + 0.30, 3.25, 3.05, 1.20, p_desc, size=11.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+
+    # Calm Footer Callout Card
+    add_box(s7, 0.90, 5.25, 11.53, 1.40, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.04)
+    add_logo(s7, 1.20, 5.58, hero=False)
+    add_text(s7, 1.30, 5.98, 4.5, 0.35, "Make Humans Talk Again.", size=14, bold=True, color=PAL["ink_primary"])
+    add_text(s7, 6.50, 5.62, 5.55, 0.70, "banrai.ai   ·   hello@banrai.ai\nSeed+ Investor Presentation  ·  Appendix Follows →", size=11.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.RIGHT, line_spacing=1.4)
+
+    # ==========================================================================
+    # APPENDIX A1: WAVE 1 PRODUCTS (DEC 2026) — GALLERY VIEW
+    # ==========================================================================
+    sa1 = prs.slides.add_slide(blank)
+    add_header(sa1, "Appendix A1 · Wave 1 Product Gallery (Dec 2026)", "Shipping Dec 2026: 1,000 US Units Each (On Budget)", "A1 / A3")
+
+    # Left: Magical Living Photo Frame (Huge Image Space + 2 Short Lines)
+    add_box(sa1, 0.90, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_image_placeholder(sa1, 1.12, 1.92, 5.16, 3.30, "[ Drop Product Photo · Magical Living Photo Frame ]", "Generous 16:10 frame for hardware + animated portrait preview")
+    add_box(sa1, 1.12, 5.38, 1.75, 0.28, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], radius=0.15)
+    add_text(sa1, 1.18, 5.42, 1.63, 0.22, "DEC 2026 · 1K UNITS", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(sa1, 3.00, 5.36, 3.30, 0.32, "Magical Living Photo Frame", size=15, bold=True, color=PAL["ink_primary"])
+    add_text(sa1, 1.12, 5.80, 5.16, 0.72, "• Harry Potter-style living portraits that wave hello as you walk by.\n• Syncs with live local weather (pulls out an umbrella when it rains outside).", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+
+    # Right: Pocket Interactive Bible
+    add_box(sa1, 6.83, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_image_placeholder(sa1, 7.05, 1.92, 5.16, 3.30, "[ Drop Product Photo · Pocket Interactive Bible ]", "Generous 16:10 frame for standalone E-Ink + 4G hardware")
+    add_box(sa1, 7.05, 5.38, 1.75, 0.28, fill_color=PAL["card_sage"], border_color=PAL["sage_accent"], radius=0.15)
+    add_text(sa1, 7.11, 5.42, 1.63, 0.22, "DEC 2026 · 1K UNITS", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(sa1, 8.93, 5.36, 3.30, 0.32, "Pocket Interactive Bible", size=15, bold=True, color=PAL["ink_primary"])
+    add_text(sa1, 7.05, 5.80, 5.16, 0.72, "• Standalone E-Ink + 4G cellular device for focused, distraction-free faith.\n• Warm Christian companion that deepens Scripture understanding via daily talk.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+
+    # ==========================================================================
+    # APPENDIX A2: WAVE 2 PRODUCTS (H1 2027 PROTOTYPING) — GALLERY VIEW
+    # ==========================================================================
+    sa2 = prs.slides.add_slide(blank)
+    add_header(sa2, "Appendix A2 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: Morning Rituals & Voice Gaming", "A2 / A3")
+
+    # Left: Dream Printer
+    add_box(sa2, 0.90, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_image_placeholder(sa2, 1.12, 1.92, 5.16, 3.30, "[ Drop Product Photo · Dream Printer ]", "Bedside alarm-clock hardware + visual dream diary UI")
+    add_box(sa2, 1.12, 5.38, 1.85, 0.28, fill_color=PAL["card_slate"], border_color=PAL["slate_accent"], radius=0.15)
+    add_text(sa2, 1.18, 5.42, 1.73, 0.22, "H1 2027 · PROTOTYPE", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(sa2, 3.10, 5.36, 3.20, 0.32, "Dream Printer", size=15, bold=True, color=PAL["ink_primary"])
+    add_text(sa2, 1.12, 5.80, 5.16, 0.72, "• Press a button upon waking to speak your dream; generates dream art + transcript.\n• Builds a connected dream diary linking recurring themes across prior nights.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+
+    # Right: Voice Adventure Walkie-Talkie
+    add_box(sa2, 6.83, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_image_placeholder(sa2, 7.05, 1.92, 5.16, 3.30, "[ Drop Product Photo · Voice Walkie-Talkie ]", "Tactile walkie-talkie gaming hardware")
+    add_box(sa2, 7.05, 5.38, 1.85, 0.28, fill_color=PAL["card_slate"], border_color=PAL["slate_accent"], radius=0.15)
+    add_text(sa2, 7.11, 5.42, 1.73, 0.22, "H1 2027 · PROTOTYPE", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+    add_text(sa2, 9.03, 5.36, 3.20, 0.32, "Voice Gaming Walkie-Talkie", size=15, bold=True, color=PAL["ink_primary"])
+    add_text(sa2, 7.05, 5.80, 5.16, 0.72, "• A character stranded on an alien planet or escape room calls for your help.\n• Calm them down, guide exploration, and solve live incidents by voice.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+
+    # ==========================================================================
+    # APPENDIX A3: WAVE 2 SPOTLIGHT — KIDS' E-INK DOODLE PAD
+    # ==========================================================================
+    sa3 = prs.slides.add_slide(blank)
+    add_header(sa3, "Appendix A3 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: E-Ink Children’s Story Doodle Pad", "A3 / A3")
+
+    # Left: Concise 3-pill summary card
+    add_box(sa3, 0.90, 1.72, 4.45, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_box(sa3, 1.20, 2.02, 1.95, 0.30, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], radius=0.15)
+    add_text(sa3, 1.26, 2.07, 1.83, 0.22, "H1 2027 · PROTOTYPE", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+
+    add_text(sa3, 1.20, 2.50, 3.85, 0.65, "Eye-Friendly E-Ink\nChildren’s Doodle Pad", size=20, bold=True, color=PAL["ink_primary"], line_spacing=1.18)
+    add_text(sa3, 1.20, 3.28, 3.85, 0.55, "How kids should experience AI—long before they even know what AI is.", size=11, bold=False, color=PAL["ink_secondary"])
+
+    kids_features = [
+        ("Doodle → Comic Story", "Extends any child’s sketch into a back-and-forth comic adventure."),
+        ("Visual Q&A", "Answers handwritten or doodled questions in a child-friendly way."),
+        ("Calm E-Ink Screen", "Zero blue light or addictive feeds—pure creative agency."),
+    ]
+    for i, (kf_head, kf_sub) in enumerate(kids_features):
+        ky = 4.00 + i * 0.82
+        add_box(sa3, 1.20, ky, 3.85, 0.70, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.06)
+        add_text(sa3, 1.38, ky + 0.10, 3.50, 0.24, kf_head, size=10.5, bold=True, color=PAL["ink_primary"])
+        add_text(sa3, 1.38, ky + 0.35, 3.50, 0.28, kf_sub, size=9.5, bold=False, color=PAL["ink_secondary"])
+
+    # Right: Giant Gallery Image Placeholder (60%+ of slide width)
+    add_box(sa3, 5.60, 1.72, 6.83, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
+    add_image_placeholder(sa3, 5.85, 1.95, 6.33, 4.54, "[ Hero Product Photo · E-Ink Children’s Story Doodle Pad ]", "Drop large hardware photo + child sketch-to-comic interaction sequence here")
+
+    prs.save(output_path)
+    print(f"Saved Pantone Light Deck: {output_path}")
 
 
 if __name__ == "__main__":
-    build_deck("Banrai_Seed_Plus_Deck.pptx", mode="dark")
-    build_deck("Banrai_Seed_Plus_Deck_Light.pptx", mode="light")
+    main_out = os.path.join(OUT_DIR, "Banrai_Seed_Plus_Deck.pptx")
+    build_pantone_deck(main_out)

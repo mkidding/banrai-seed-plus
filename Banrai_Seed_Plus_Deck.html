@@ -1,835 +1,741 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Banrai — Seed+ Investor Deck</title>
+  <title>Banrai — Seed+ Investor Deck (Pantone Edition)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root[data-theme="dark"] {
-      --bg-base: #0b101b;
-      --bg-card: rgba(19, 26, 41, 0.82);
-      --bg-card-alt: rgba(24, 34, 54, 0.90);
-      --bg-placeholder: rgba(14, 20, 33, 0.78);
-      --border-card: rgba(255, 255, 255, 0.09);
-      --border-placeholder: rgba(168, 230, 207, 0.35);
-      --text-primary: #f2f5f8;
-      --text-secondary: #a2b0c4;
-      --text-muted: #6c7c94;
-      --accent-lime: #cafb5b;
-      --accent-mint: #a8e6cf;
-      --accent-lavender: #c7b9ff;
-      --accent-amber: #fde08d;
-      --pill-bg: rgba(202, 251, 91, 0.12);
-      --pill-text: #cafb5b;
-      --orb-1: rgba(202, 251, 91, 0.11);
-      --orb-2: rgba(168, 230, 207, 0.10);
-      --orb-3: rgba(199, 185, 255, 0.09);
+    :root {
+      /* Pantone-Inspired Calm Editorial Palette */
+      --bg-canvas: #F4F2ED;        /* Pantone 11-4201 Cloud Dancer */
+      --card-white: #FBFAF7;       /* Pantone Marshmallow */
+      --card-stone: #ECE9E1;       /* Pantone 12-0104 Warm Sand */
+      --card-sage: #E1E8E0;        /* Pantone Soft Celadon */
+      --card-slate: #E0E7EC;       /* Pantone Pale Mist */
+      --border-subtle: #D8D4CA;    /* Pantone Pumice Stone */
+      --border-strong: #A8A49A;    /* Pantone Warm Taupe */
+      --ink-primary: #23262A;      /* Pantone 19-4007 After Dark */
+      --ink-secondary: #60656C;    /* Pantone 17-4402 Neutral Gray */
+      --ink-muted: #8E9298;        /* Pantone Harbor Mist */
+      --sage-accent: #58725C;      /* Pantone 17-0210 Laurel Oak */
+      --slate-accent: #4E697A;     /* Pantone 17-4412 Porcelain Blue */
+      /* Reserved strictly for 1 key callout per slide + logo dot */
+      --callout-lime: #CAFB5B;
+      --callout-lime-border: #9CCC30;
     }
 
-    :root[data-theme="light"] {
-      --bg-base: #f6f8f5;
-      --bg-card: rgba(255, 255, 255, 0.88);
-      --bg-card-alt: rgba(238, 244, 236, 0.92);
-      --bg-placeholder: rgba(234, 240, 235, 0.80);
-      --border-card: rgba(17, 24, 34, 0.09);
-      --border-placeholder: rgba(62, 128, 98, 0.38);
-      --text-primary: #111822;
-      --text-secondary: #4a5868;
-      --text-muted: #7c8a98;
-      --accent-lime: #4f830d;
-      --accent-mint: #1f7a5c;
-      --accent-lavender: #6147b8;
-      --accent-amber: #b47618;
-      --pill-bg: rgba(202, 251, 91, 0.45);
-      --pill-text: #2c4a04;
-      --orb-1: rgba(202, 251, 91, 0.28);
-      --orb-2: rgba(168, 230, 207, 0.26);
-      --orb-3: rgba(199, 185, 255, 0.22);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--bg-base);
-      color: var(--text-primary);
-      overflow: hidden;
+      background-color: var(--bg-canvas);
+      color: var(--ink-primary);
       height: 100vh;
       width: 100vw;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: background-color 0.35s ease, color 0.35s ease;
     }
 
-    /* Ambient peaceful aurora backdrop */
-    .ambient-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    .orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(110px);
-    }
-    .orb-1 { width: 52vw; height: 52vw; top: -18vw; right: -10vw; background: var(--orb-1); }
-    .orb-2 { width: 55vw; height: 55vw; bottom: -22vw; left: -12vw; background: var(--orb-2); }
-    .orb-3 { width: 42vw; height: 42vw; top: 30vh; left: 32vw; background: var(--orb-3); }
-
-    /* Deck Viewport */
     .deck-stage {
-      position: relative;
-      z-index: 10;
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 28px 40px 12px;
+      padding: 24px 36px 8px;
     }
 
     .slide {
       display: none;
-      width: min(1280px, 94vw);
+      width: min(1280px, 95vw);
       aspect-ratio: 16 / 9;
-      background: var(--bg-card);
-      backdrop-filter: blur(24px);
-      border: 1px solid var(--border-card);
-      border-radius: 28px;
-      padding: 48px 60px;
-      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
-      position: relative;
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 42px 54px;
+      box-shadow: 0 18px 48px rgba(35, 38, 42, 0.06);
       flex-direction: column;
       justify-content: space-between;
-      animation: fadeSlide 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
     }
+    .slide.active { display: flex; }
 
-    .slide.active {
-      display: flex;
-    }
-
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(8px) scale(0.995); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    /* Slide Header & Brand */
+    /* Header */
     .slide-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
     .eyebrow {
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent-lime);
-      margin-bottom: 8px;
+      color: var(--sage-accent);
+      margin-bottom: 6px;
     }
     .slide-title {
-      font-size: clamp(24px, 2.3vw, 34px);
+      font-size: clamp(24px, 2.2vw, 32px);
       font-weight: 600;
-      letter-spacing: -0.025em;
-      line-height: 1.18;
-      color: var(--text-primary);
-    }
-    .slide-subtitle {
-      font-size: clamp(13px, 1.1vw, 15.5px);
-      font-weight: 300;
-      color: var(--text-secondary);
-      margin-top: 6px;
-      max-width: 840px;
-      line-height: 1.45;
+      letter-spacing: -0.02em;
+      color: var(--ink-primary);
+      line-height: 1.15;
     }
 
     /* Official Banrai Logo */
     .banrai-logo {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 19px;
       letter-spacing: -0.04em;
-      color: var(--text-primary);
-      user-select: none;
+      color: var(--ink-primary);
     }
     .banrai-logo .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #cafb5b;
-      box-shadow: 0 0 12px rgba(202, 251, 91, 0.85);
+      background: var(--callout-lime);
+      border: 1px solid var(--callout-lime-border);
       margin-top: 3px;
     }
     .banrai-logo.hero {
-      font-size: clamp(54px, 5.2vw, 76px);
-      gap: 14px;
+      font-size: 64px;
+      gap: 12px;
     }
     .banrai-logo.hero .dot {
       width: 18px;
       height: 18px;
       margin-top: 10px;
-      box-shadow: 0 0 22px rgba(202, 251, 91, 0.9);
     }
 
-    /* Grid Layouts */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      flex: 1;
-      align-items: stretch;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-
+    /* Surfaces */
     .card {
-      background: var(--bg-card-alt);
-      border: 1px solid var(--border-card);
-      border-radius: 20px;
-      padding: 24px 26px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: var(--card-white);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 22px 24px;
     }
-    .card.highlight-lime { border-color: var(--accent-lime); }
-    .card.highlight-mint { border-color: var(--accent-mint); }
-    .card.highlight-lavender { border-color: var(--accent-lavender); }
+    .card-stone { background: var(--card-stone); }
+    .card-sage { background: var(--card-sage); }
+    .card-slate { background: var(--card-slate); }
+    .callout-lime {
+      background: var(--callout-lime) !important;
+      border: 1.5px solid var(--callout-lime-border) !important;
+      color: var(--ink-primary) !important;
+    }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 13px;
+    .badge {
+      display: inline-block;
+      padding: 4px 11px;
       border-radius: 999px;
-      font-size: 10.5px;
+      font-size: 10px;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      background: var(--pill-bg);
-      color: var(--pill-text);
-      width: fit-content;
+      background: var(--card-stone);
+      color: var(--ink-secondary);
+      border: 1px solid var(--border-subtle);
     }
 
-    .bullet-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-      margin-top: 12px;
-    }
-    .bullet-list li {
-      font-size: 13.5px;
-      line-height: 1.48;
-      color: var(--text-secondary);
-      font-weight: 300;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-    }
-    .bullet-list li::before {
-      content: "●";
-      color: var(--accent-lime);
-      font-size: 10px;
-      margin-top: 3px;
-      flex-shrink: 0;
-    }
-    .bullet-list li strong {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    /* Product Image Placeholders */
-    .img-placeholder {
-      background: var(--bg-placeholder);
-      border: 1.5px dashed var(--border-placeholder);
-      border-radius: 16px;
+    /* Image Placeholder */
+    .img-frame {
+      background: var(--card-stone);
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 24px;
-      min-height: 185px;
-      flex: 1;
-      margin-bottom: 16px;
-      transition: border-color 0.2s ease;
-    }
-    .img-placeholder .sparkle {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border-placeholder);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--accent-lime);
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-    .img-placeholder .ph-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-    .img-placeholder .ph-sub {
-      font-size: 11.5px;
-      color: var(--text-muted);
-      margin-top: 4px;
+      padding: 20px;
     }
 
-    /* Metric Big Numbers */
-    .big-stat {
-      font-size: clamp(24px, 2.2vw, 32px);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-bottom: 6px;
-    }
-
-    /* Bottom Controls Bar */
+    /* Controls */
     .deck-controls {
-      position: relative;
-      z-index: 20;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 8px 44px 18px;
+      padding: 8px 44px 16px;
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--ink-muted);
     }
-    .ctrl-group {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    button.ctrl-btn {
-      background: var(--bg-card);
-      color: var(--text-primary);
-      border: 1px solid var(--border-card);
+    .btn {
+      background: var(--card-white);
+      color: var(--ink-primary);
+      border: 1px solid var(--border-subtle);
       padding: 6px 14px;
       border-radius: 999px;
       font-family: inherit;
       font-size: 12px;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-    button.ctrl-btn:hover {
-      border-color: var(--accent-lime);
-    }
+    .btn:hover { border-color: var(--ink-secondary); }
 
     @media print {
       body { overflow: visible; height: auto; }
       .deck-controls { display: none; }
       .deck-stage { display: block; padding: 0; }
-      .slide {
-        display: flex !important;
-        width: 100%;
-        page-break-after: always;
-        box-shadow: none;
-        margin-bottom: 20px;
-      }
+      .slide { display: flex !important; width: 100%; page-break-after: always; margin-bottom: 16px; box-shadow: none; }
     }
   </style>
 </head>
 <body>
-  <div class="ambient-bg">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-  </div>
-
   <main class="deck-stage">
+
     <!-- SLIDE 1: COVER -->
     <section class="slide active">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span class="pill">✦ AI-Native Consumer Ecosystem</span>
-        <span style="font-size:12px; color:var(--text-muted);">Seed+ Investor Presentation · US Market</span>
-      </div>
+      <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:48px;">
+        <span class="badge">Seed+ Investor Presentation · US Market</span>
 
-      <div style="text-align:center; margin:auto 0; padding: 16px 0;">
-        <div class="banrai-logo hero">Banrai<span class="dot"></span></div>
-        <h1 style="font-size:clamp(28px, 3vw, 44px); font-weight:600; letter-spacing:-0.025em; margin-top:18px;">
-          Building the World’s First “Fun AI”
-        </h1>
-        <p style="font-size:16px; font-weight:300; color:var(--text-secondary); max-width:680px; margin:12px auto 0; line-height:1.55;">
-          Delightfully non-functional, AI-native consumer electronics for everyday joy.<br/>
-          Guided by one quiet conviction: <strong style="color:var(--text-primary); font-weight:500;">Make Humans Talk Again.</strong>
-        </p>
-      </div>
+        <div>
+          <div class="banrai-logo hero">Banrai<span class="dot"></span></div>
+          <h1 style="font-size:32px; font-weight:600; margin-top:14px; letter-spacing:-0.02em;">
+            Consumer AI Hardware Built for Joy, Not Chores.
+          </h1>
+          <p style="font-size:15px; color:var(--ink-secondary); margin-top:8px;">
+            Guided by one quiet conviction: <strong>Make Humans Talk Again.</strong>
+          </p>
+        </div>
 
-      <div class="grid-3">
-        <div class="card" style="text-align:center; padding:18px;">
-          <div style="font-size:14px; font-weight:600; color:var(--accent-lime);">100% Hard-Subscription</div>
-          <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">SaaS recurring economics on physical hardware</div>
-        </div>
-        <div class="card" style="text-align:center; padding:18px;">
-          <div style="font-size:14px; font-weight:600; color:var(--accent-mint);">&lt; 9 Months · $150K–$200K</div>
-          <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Concept to first 1,000 units in the US market</div>
-        </div>
-        <div class="card" style="text-align:center; padding:18px;">
-          <div style="font-size:14px; font-weight:600; color:var(--accent-lavender);">6–10 Products / Year</div>
-          <div style="font-size:12px; color:var(--text-secondary); margin-top:4px;">Multi-brand portfolio on one unified backend</div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; width:100%; max-width:920px;">
+          <div class="card card-stone" style="padding:16px;">
+            <div style="font-size:14px; font-weight:600;">100% Hard-Subscription</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:3px;">SaaS recurring model</div>
+          </div>
+          <div class="card callout-lime" style="padding:16px;">
+            <div style="font-size:14px; font-weight:700;">&lt; 9 Mos · $150K–$200K</div>
+            <div style="font-size:11.5px; color:var(--ink-primary); margin-top:3px;">Concept to 1,000 US units</div>
+          </div>
+          <div class="card card-stone" style="padding:16px;">
+            <div style="font-size:14px; font-weight:600;">6–10 Products / Year</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:3px;">Powered by 1 shared backend</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 2: THE COUNTER-TREND THESIS -->
+    <!-- SLIDE 2: VISUAL 2x2 POSITIONING -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">01 · The Philosophy</div>
-          <h2 class="slide-title">Everyone Is Building Functional AI. We Build Fun AI.</h2>
-          <p class="slide-subtitle">In a sense, we are building the most “useless” AI in the world—because human life isn’t an enterprise optimization problem.</p>
+          <div class="eyebrow">01 · Category Positioning</div>
+          <h2 class="slide-title">Everyone Builds Functional AI. We Build Fun AI.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-2" style="margin-bottom:18px;">
-        <div class="card">
-          <div>
-            <span class="pill" style="background:rgba(255,255,255,0.06); color:var(--text-muted);">The Industry Default</span>
-            <h3 style="font-size:22px; margin-top:12px; color:var(--text-secondary);">Functional AI</h3>
-            <ul class="bullet-list">
-              <li><div><strong>Task-Obsessed:</strong> Built to draft emails, summarize meetings, and shave seconds off spreadsheets.</div></li>
-              <li><div><strong>Utility Mindset:</strong> Users only interact when they have a chore or work ticket to clear.</div></li>
-              <li><div><strong>Commoditized Race:</strong> Competing head-on with tech giants on raw benchmark utility.</div></li>
-            </ul>
+      <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap:22px; flex:1;">
+        <!-- 2x2 Visual Matrix -->
+        <div class="card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">CONSUMER AI LANDSCAPE</div>
+          <div style="position:relative; flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:24px; padding:24px 16px;">
+            <!-- Crosshairs -->
+            <div style="position:absolute; left:8%; right:8%; top:50%; height:1.5px; background:var(--border-strong);"></div>
+            <div style="position:absolute; top:8%; bottom:8%; left:50%; width:1.5px; background:var(--border-strong);"></div>
+            <span style="position:absolute; left:8%; top:52%; font-size:10px; font-weight:600; color:var(--ink-muted);">← Work &amp; Tasks</span>
+            <span style="position:absolute; right:8%; top:52%; font-size:10px; font-weight:600; color:var(--sage-accent);">Play &amp; Daily Joy →</span>
+            <span style="position:absolute; left:50%; top:2%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-secondary);">↑ Tactile Hardware</span>
+            <span style="position:absolute; left:50%; bottom:2%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-muted);">↓ Screen Chatbots</span>
+
+            <!-- Top Left -->
+            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:14px;">
+              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Utility Wearables</div>
+              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:3px;">Trying to replace the phone</div>
+            </div>
+            <!-- Top Right: BANRAI CALLOUT -->
+            <div class="card callout-lime" style="margin:auto; width:92%; text-align:center; padding:16px;">
+              <div style="font-size:14px; font-weight:700;">Banrai · “Fun AI”</div>
+              <div style="font-size:10.5px; margin-top:4px;">Delightfully “useless” hardware for daily joy &amp; conversation</div>
+            </div>
+            <!-- Bottom Left -->
+            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:14px;">
+              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Functional AI Crowd</div>
+              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:3px;">Emails, code, spreadsheets (99% of market)</div>
+            </div>
+            <!-- Bottom Right -->
+            <div style="margin:auto; width:88%; text-align:center; font-size:11px; color:var(--ink-muted);">
+              Screen-bound entertainment apps
+            </div>
           </div>
         </div>
 
-        <div class="card highlight-lime">
-          <div>
-            <span class="pill">✦ The Banrai Counter-Trend</span>
-            <h3 style="font-size:22px; margin-top:12px; color:var(--text-primary);">Fun AI (Delightfully “Useless”)</h3>
-            <ul class="bullet-list">
-              <li><div><strong>Joy &amp; Curiosity First:</strong> Built for moments of wonder, play, storytelling, and emotional warmth.</div></li>
-              <li><div><strong>Ambient Daily Presence:</strong> Lives across diverse brands &amp; tactile form factors in everyday life.</div></li>
-              <li><div><strong>Zero Utility Pressure:</strong> No tasks to optimize—just companions that spark smiles and dialogue.</div></li>
-            </ul>
+        <!-- 3 Crisp Essence Blocks -->
+        <div style="display:flex; flex-direction:column; gap:14px; justify-content:space-between;">
+          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+            <div class="eyebrow">01 · Counter-Trend</div>
+            <div style="font-size:17px; font-weight:600;">Delightfully “Useless”</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Zero task optimization. Built purely for curiosity, laughter, and warmth.</p>
+          </div>
+          <div class="card card-sage" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+            <div class="eyebrow">02 · Unifying Theme</div>
+            <div style="font-size:17px; font-weight:600;">“Make Humans Talk Again”</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Replaces passive screen scrolling with active voice, stories, and imagination.</p>
+          </div>
+          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+            <div class="eyebrow">03 · Multi-Brand Strategy</div>
+            <div style="font-size:17px; font-weight:600;">Ambient in Every Room</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Different brands &amp; form factors—from bedside clocks to living room frames.</p>
           </div>
         </div>
-      </div>
-
-      <div class="card highlight-mint" style="flex-direction:row; align-items:center; gap:24px; padding:16px 24px;">
-        <div style="min-width:240px;">
-          <div style="font-size:10.5px; font-weight:600; letter-spacing:0.1em; color:var(--accent-mint); text-transform:uppercase;">Unifying Theme</div>
-          <div style="font-size:16px; font-weight:600; color:var(--text-primary); margin-top:2px;">“Make Humans Talk Again”</div>
-        </div>
-        <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-          After a decade of passive smartphone scrolling, our unifying theme inspires active voice, imagination, and conversation—while enabling every product we ship to run on a single shared conversational AI backend.
-        </p>
       </div>
     </section>
 
-    <!-- SLIDE 3: BUSINESS MODEL -->
+    <!-- SLIDE 3: BUSINESS MODEL VISUAL -->
     <section class="slide">
       <div class="slide-top">
         <div>
           <div class="eyebrow">02 · Business Model</div>
-          <h2 class="slide-title">Hardware as the Vessel. SaaS as the Engine.</h2>
-          <p class="slide-subtitle">Because our products are truly AI-native and consume live tokens, every device operates on a hard monthly subscription.</p>
+          <h2 class="slide-title">Hardware Is the Vessel. SaaS Is the Engine.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-2" style="margin-bottom:18px; flex:0.85;">
-        <div class="card">
+      <div style="display:flex; flex-direction:column; gap:18px; flex:1;">
+        <!-- Traditional Hardware Track -->
+        <div class="card card-stone" style="display:grid; grid-template-columns: 1.1fr 2.4fr; gap:24px; align-items:center; flex:0.85;">
           <div>
-            <h3 style="font-size:17px; color:var(--text-secondary);">Traditional Consumer Hardware</h3>
-            <ul class="bullet-list">
-              <li><div><strong>One-Time Margin:</strong> Profit ends the moment the physical box is sold.</div></li>
-              <li><div><strong>Upgrade Treadmill:</strong> Forced to push Gen-2 replacements or chase new unit buyers to survive.</div></li>
-            </ul>
+            <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">TRADITIONAL HARDWARE</div>
+            <div style="font-size:18px; font-weight:600; color:var(--ink-secondary); margin-top:4px;">One-Time Unit Margin</div>
+            <p style="font-size:11.5px; color:var(--ink-muted); margin-top:4px;">Profit stops at checkout. Forced to push Gen-2 upgrades.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:10px;">
+            <div class="card" style="text-align:center; padding:14px;">
+              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Day 1: Sell Box</div>
+              <div style="font-size:10.5px; color:var(--ink-muted);">One-off margin</div>
+            </div>
+            <span style="color:var(--ink-muted);">→</span>
+            <div class="card" style="text-align:center; padding:14px;">
+              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Month 2–12</div>
+              <div style="font-size:10.5px; color:var(--ink-muted);">$0 recurring revenue</div>
+            </div>
+            <span style="color:var(--ink-muted);">→</span>
+            <div class="card" style="text-align:center; padding:14px;">
+              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Year 2+</div>
+              <div style="font-size:10.5px; color:var(--ink-muted);">Push Gen-2 hardware</div>
+            </div>
           </div>
         </div>
-        <div class="card highlight-lime">
-          <div>
-            <h3 style="font-size:17px; color:var(--accent-lime);">Banrai Hard-Subscription Model</h3>
-            <ul class="bullet-list">
-              <li><div><strong>No Free Tier:</strong> Real token consumption is paired with sustainable recurring subscription revenue.</div></li>
-              <li><div><strong>Pure SaaS Alignment:</strong> We win by delivering continuous daily delight that retains subscribers.</div></li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
-      <div class="grid-3" style="flex:1;">
-        <div class="card highlight-lime">
+        <!-- Banrai Hard-Subscription Track -->
+        <div class="card" style="border:1.5px solid var(--sage-accent); display:grid; grid-template-columns: 1.1fr 2.4fr; gap:24px; align-items:center; flex:1.15;">
           <div>
-            <div class="eyebrow" style="color:var(--accent-lime);">01 · Tactile Entry</div>
-            <h4 style="font-size:16px; margin-bottom:8px;">Hardware + Bundled Months</h4>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              Every device ships with several complimentary months of subscription included—removing friction at unboxing.
-            </p>
+            <div class="eyebrow">The Banrai Model</div>
+            <div style="font-size:21px; font-weight:600;">100% Hard-Subscription</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px;">Real AI costs tokens—so there is no free tier. Hardware unlocks SaaS recurring LTV.</p>
           </div>
-        </div>
-        <div class="card highlight-mint">
-          <div>
-            <div class="eyebrow" style="color:var(--accent-mint);">02 · Daily Habit</div>
-            <h4 style="font-size:16px; margin-bottom:8px;">Hard Monthly Subscription</h4>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              Continuing the experience requires an active monthly subscription—turning hardware owners into SaaS subscribers.
-            </p>
-          </div>
-        </div>
-        <div class="card highlight-lavender">
-          <div>
-            <div class="eyebrow" style="color:var(--accent-lavender);">03 · SaaS Compounding</div>
-            <h4 style="font-size:16px; margin-bottom:8px;">Continuous Value Delivery</h4>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              Our software backend continuously evolves stories, memories, and interactions—driving long-term LTV.
-            </p>
+          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:10px;">
+            <div class="card card-sage" style="text-align:center; padding:18px 14px;">
+              <div style="font-size:10px; font-weight:600; color:var(--sage-accent);">01 · UNBOX</div>
+              <div style="font-size:13px; font-weight:600; margin-top:4px;">Hardware + Free Months</div>
+              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:4px;">Bundled trial for instant magic</div>
+            </div>
+            <span style="color:var(--sage-accent); font-weight:700;">→</span>
+            <div class="card callout-lime" style="text-align:center; padding:18px 14px;">
+              <div style="font-size:10px; font-weight:700;">02 · SUBSCRIBE</div>
+              <div style="font-size:13px; font-weight:700; margin-top:4px;">Mandatory Monthly Fee</div>
+              <div style="font-size:10.5px; margin-top:4px;">Keeps the AI companion alive</div>
+            </div>
+            <span style="color:var(--sage-accent); font-weight:700;">→</span>
+            <div class="card card-sage" style="text-align:center; padding:18px 14px;">
+              <div style="font-size:10px; font-weight:600; color:var(--sage-accent);">03 · COMPOUND</div>
+              <div style="font-size:13px; font-weight:600; margin-top:4px;">Continuous SaaS Value</div>
+              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:4px;">Cloud evolves stories &amp; memory</div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 4: UNFAIR ADVANTAGE & UNIT ECONOMICS -->
+    <!-- SLIDE 4: UNFAIR ADVANTAGE — HUB & SPOKE ARCHITECTURE + COST BARS -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">03 · Unfair Advantage &amp; Unit Economics</div>
-          <h2 class="slide-title">Many Form Factors. One Unified AI &amp; Subscription OS.</h2>
-          <p class="slide-subtitle">Single-product hardware companies must sell 10M+ units to win. Our portfolio model succeeds at 100K+ units per line.</p>
+          <div class="eyebrow">03 · Unfair Advantage</div>
+          <h2 class="slide-title">One Shared Backend Powers Dozens of Hardware Products.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-4" style="margin-bottom:20px;">
-        <div class="card">
-          <div>
-            <div class="big-stat" style="color:var(--accent-lime);">&lt; 9 Months</div>
-            <div style="font-size:13.5px; font-weight:600;">Concept to 1,000 Units</div>
-            <p style="font-size:11.5px; color:var(--text-secondary); margin-top:6px; font-weight:300;">From initial sketch to first 1,000 units landed in the US market.</p>
+      <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap:22px; flex:1;">
+        <!-- Hub & Spoke Graphic -->
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--sage-accent);">REUSABLE PLATFORM ARCHITECTURE</div>
+          <div style="display:grid; grid-template-columns: 1fr 40px 1.25fr; align-items:center; flex:1; padding:8px 0;">
+            <!-- Left Hub -->
+            <div class="card card-sage" style="border:1.5px solid var(--sage-accent); text-align:center; padding:20px 14px;">
+              <div style="font-size:10px; font-weight:700; color:var(--sage-accent);">SHARED CORE</div>
+              <div style="font-size:16px; font-weight:700; margin:6px 0 12px;">1 Unified AI +<br/>Billing Backend</div>
+              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600; margin-bottom:6px;">Conversational Voice OS</div>
+              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600; margin-bottom:6px;">Image &amp; Story Engine</div>
+              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600;">Subscription &amp; Metering</div>
+            </div>
+            <!-- Connectors -->
+            <div style="display:flex; flex-direction:column; justify-content:space-around; height:82%; align-items:center; color:var(--sage-accent); font-weight:700;">
+              <span>───►</span><span>───►</span><span>───►</span><span>───►</span><span>───►</span><span>───►</span>
+            </div>
+            <!-- Right Spokes -->
+            <div style="display:flex; flex-direction:column; gap:7px;">
+              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>01 · Living Photo Frame</strong><span style="color:var(--ink-secondary);">Dec 2026</span></div>
+              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>02 · Pocket Interactive Bible</strong><span style="color:var(--ink-secondary);">Dec 2026</span></div>
+              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>03 · Dream Printer</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
+              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>04 · Voice Walkie-Talkie</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
+              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>05 · Kids’ E-Ink Doodle Pad</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
+              <div class="card card-slate" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>06–10+ · New Launches / Yr</strong><span style="color:var(--slate-accent);">Pipeline</span></div>
+            </div>
           </div>
         </div>
-        <div class="card">
-          <div>
-            <div class="big-stat" style="color:var(--accent-mint);">$150K–$200K</div>
-            <div style="font-size:13.5px; font-weight:600;">All-In Launch CapEx</div>
-            <p style="font-size:11.5px; color:var(--text-secondary); margin-top:6px; font-weight:300;">Total R&amp;D, tooling, and COGS for the first 1,000 US units per product.</p>
-          </div>
-        </div>
-        <div class="card">
-          <div>
-            <div class="big-stat" style="color:var(--accent-lavender);">100K+ Units</div>
-            <div style="font-size:13.5px; font-weight:600;">Success Threshold</div>
-            <p style="font-size:11.5px; color:var(--text-secondary); margin-top:6px; font-weight:300;">Highly profitable per line without needing a 10M-unit single bet.</p>
-          </div>
-        </div>
-        <div class="card">
-          <div>
-            <div class="big-stat" style="color:var(--accent-amber);">US Market Only</div>
-            <div style="font-size:13.5px; font-weight:600;">Focused Go-To-Market</div>
-            <p style="font-size:11.5px; color:var(--text-secondary); margin-top:6px; font-weight:300;">100% focused on US consumers with strong subscription willingness-to-pay.</p>
-          </div>
-        </div>
-      </div>
 
-      <div class="card highlight-lime" style="flex-direction:row; align-items:center; gap:28px; flex:1;">
-        <div style="flex:1.1;">
-          <div class="eyebrow">The Banrai Shared Core</div>
-          <h3 style="font-size:21px; margin-bottom:8px;">Unified AI + Subscription Backend</h3>
-          <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-            Every hardware line plugs into the same software framework—dramatically lowering engineering cycle time, upfront CapEx, and ongoing maintenance.
-          </p>
-        </div>
-        <div class="grid-3" style="flex:1.6;">
-          <div class="card" style="padding:16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--accent-lime);">Voice &amp; Dialogue OS</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-top:6px; font-weight:300;">Low-latency speech, long-term memory &amp; persona engine</div>
+        <!-- Visual Cost & Speed Bars -->
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">ECONOMICS PER HARDWARE LINE (US MARKET)</div>
+
+          <div>
+            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Time to Market (First 1,000 US Units)</div>
+            <div class="card card-stone" style="padding:8px 12px; font-size:11px; color:var(--ink-secondary); margin-bottom:6px;">Traditional Hardware: 18 – 24+ Months</div>
+            <div class="card card-sage" style="width:52%; padding:8px 12px; font-size:11.5px; font-weight:700; border-color:var(--sage-accent);">Banrai: &lt; 9 Mos</div>
           </div>
-          <div class="card" style="padding:16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--accent-mint);">Generative Media</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-top:6px; font-weight:300;">Real-time animation, illustration &amp; story synthesis</div>
+
+          <div>
+            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">All-In Launch Cost (R&amp;D + First 1,000 Units)</div>
+            <div class="card card-stone" style="padding:8px 12px; font-size:11px; color:var(--ink-secondary); margin-bottom:6px;">Traditional Hardware: $3M – $10M+</div>
+            <div class="card callout-lime" style="width:64%; padding:9px 12px; font-size:12px; font-weight:700;">Banrai: $150K – $200K</div>
           </div>
-          <div class="card" style="padding:16px;">
-            <div style="font-size:13px; font-weight:600; color:var(--accent-lavender);">Subscription Billing</div>
-            <div style="font-size:11px; color:var(--text-secondary); margin-top:6px; font-weight:300;">Unified token metering, trial bundling &amp; recurring billing</div>
+
+          <div class="card card-stone" style="padding:14px;">
+            <div style="font-size:11.5px; font-weight:600;">Unit Threshold for a Winner</div>
+            <div style="font-size:11px; color:var(--ink-secondary); margin-top:4px;">
+              • Single-Product Co: Needs <strong>10M+ units</strong><br/>
+              • Banrai Portfolio: Wins at <strong>100K+ units</strong> per line
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 5: WAVE 1 LAUNCHING DEC 2026 -->
+    <!-- SLIDE 5: CONSOLIDATED PRODUCT PORTFOLIO AT A GLANCE -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">04 · Launching December 2026 · 1,000 US Units Each</div>
-          <h2 class="slide-title">Wave 1 Products: On Schedule &amp; Within Budget</h2>
-          <p class="slide-subtitle">Hitting the US market in Dec 2026 with 1,000 units each—tracking well within (or below) our $150K–$200K budget.</p>
+          <div class="eyebrow">04 · Product Roadmap (US Market Exclusively)</div>
+          <h2 class="slide-title">5 Products in Motion. 6–10 New Launches Every Year.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <div class="img-placeholder">
-            <div class="sparkle">✦</div>
-            <div class="ph-title">[ Product Image Placeholder · Magical Photo Frame ]</div>
-            <div class="ph-sub">Drop static or animated concept photo here</div>
-          </div>
+      <div style="display:grid; grid-template-columns: 2fr 3fr; gap:14px; margin-bottom:10px;">
+        <div class="card callout-lime" style="padding:8px 14px; text-align:center; font-size:11px; font-weight:700;">
+          WAVE 1 · DEC 2026 (1,000 US UNITS EACH · ON BUDGET)
+        </div>
+        <div class="card card-sage" style="padding:8px 14px; text-align:center; font-size:11px; font-weight:600;">
+          WAVE 2 · H1 2027 (CURRENTLY IN PROTOTYPING)
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; flex:1;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 01 ]</div>
           <div>
-            <span class="pill">Dec 2026 · 1,000 US Units</span>
-            <h3 style="font-size:19px; margin-top:10px;">Magical Living Photo Frame</h3>
-            <ul class="bullet-list">
-              <li><div><strong>Harry Potter-Style Portraits:</strong> Upload a photo and watch figures come alive with contextual animation bundles.</div></li>
-              <li><div><strong>Presence &amp; Weather Aware:</strong> Waves hello or walks away as you pass—and pulls up an umbrella inside the frame when it rains outside.</div></li>
-            </ul>
+            <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
+            <div style="font-size:14px; font-weight:600; line-height:1.2;">Magical Living Photo Frame</div>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Portraits wave hello &amp; react to live local weather.</p>
           </div>
         </div>
-
-        <div class="card">
-          <div class="img-placeholder" style="border-color:rgba(168,230,207,0.45);">
-            <div class="sparkle" style="color:var(--accent-mint);">✦</div>
-            <div class="ph-title">[ Product Image Placeholder · Pocket Interactive Bible ]</div>
-            <div class="ph-sub">Drop standalone E-Ink + 4G device photo here</div>
-          </div>
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 02 ]</div>
           <div>
-            <span class="pill">Dec 2026 · 1,000 US Units</span>
-            <h3 style="font-size:19px; margin-top:10px;">Pocket Interactive Bible</h3>
-            <ul class="bullet-list">
-              <li><div><strong>Standalone E-Ink + 4G:</strong> Dedicated, distraction-free hardware with built-in cellular connectivity.</div></li>
-              <li><div><strong>Trusted Christian Companion:</strong> Acts like a warm Christian best friend—never lecturing, deepening Scripture understanding through daily conversation.</div></li>
-            </ul>
+            <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
+            <div style="font-size:14px; font-weight:600; line-height:1.2;">Pocket Interactive Bible</div>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Standalone E-Ink + 4G daily Christian buddy.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 03 ]</div>
+          <div>
+            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
+            <div style="font-size:14px; font-weight:600; line-height:1.2;">Dream Printer</div>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">One-button morning dream art &amp; connected diary.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 04 ]</div>
+          <div>
+            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
+            <div style="font-size:14px; font-weight:600; line-height:1.2;">Voice Gaming Walkie-Talkie</div>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Co-op voice rescue with a stranded character.</p>
+          </div>
+        </div>
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 05 ]</div>
+          <div>
+            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
+            <div style="font-size:14px; font-weight:600; line-height:1.2;">Kids’ E-Ink Doodle Pad</div>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Turns children’s sketches into interactive comics.</p>
           </div>
         </div>
       </div>
+
+      <div class="card card-stone" style="margin-top:14px; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+        <strong>Deep Backlog: Launching 6–10 new Fun AI hardware products every year.</strong>
+        <span style="color:var(--sage-accent); font-weight:600;">See Appendix (A1–A3) for full product gallery →</span>
+      </div>
     </section>
 
-    <!-- SLIDE 6: WAVE 2 H1 2027 PIPELINE (PART 1) -->
+    <!-- SLIDE 6: DATA MOAT FLYWHEEL -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">05 · H1 2027 Pipeline · Currently in Prototyping</div>
-          <h2 class="slide-title">Wave 2: Capturing Morning Wonder &amp; Voice Play</h2>
-          <p class="slide-subtitle">Three additional products in active prototyping for H1 2027 US release—starting with morning dreams and tactile gaming.</p>
+          <div class="eyebrow">05 · Defensibility &amp; Moat</div>
+          <h2 class="slide-title">Capturing the Data That Doesn’t Exist on the Internet.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <div class="img-placeholder" style="border-color:rgba(199,185,255,0.45);">
-            <div class="sparkle" style="color:var(--accent-lavender);">✦</div>
-            <div class="ph-title">[ Product Image Placeholder · Dream Printer ]</div>
-            <div class="ph-sub">Drop alarm-clock hardware &amp; visual dream diary image here</div>
-          </div>
-          <div>
-            <span class="pill" style="color:var(--accent-lavender); background:rgba(199,185,255,0.14);">H1 2027 · Prototyping</span>
-            <h3 style="font-size:19px; margin-top:10px;">Dream Printer</h3>
-            <ul class="bullet-list">
-              <li><div><strong>One-Press Morning Ritual:</strong> Press a button upon waking and speak your dream; generates dream imagery + voice transcript.</div></li>
-              <li><div><strong>Connected Dream Diary:</strong> Co-develops dreams into complete stories and links recurring themes across prior nights.</div></li>
-            </ul>
-          </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px;">
+        <div class="card card-stone" style="padding:18px 22px;">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">PUBLIC INTERNET DATA</div>
+          <div style="font-size:14px; font-weight:600; color:var(--ink-secondary); margin-top:4px;">Teaches AI how to work, code, and summarize. Every competitor scrapes the same web.</div>
         </div>
+        <div class="card callout-lime" style="padding:18px 22px;">
+          <div style="font-size:10px; font-weight:700; letter-spacing:0.1em;">BANRAI PROPRIETARY DATA</div>
+          <div style="font-size:14px; font-weight:700; margin-top:4px;">Captures how humans play, laugh, and wonder. Zero public dataset exists—earned live.</div>
+        </div>
+      </div>
 
-        <div class="card">
-          <div class="img-placeholder" style="border-color:rgba(253,224,141,0.45);">
-            <div class="sparkle" style="color:var(--accent-amber);">✦</div>
-            <div class="ph-title">[ Product Image Placeholder · Voice Gaming Walkie-Talkie ]</div>
-            <div class="ph-sub">Drop handheld walkie-talkie gaming hardware photo here</div>
-          </div>
-          <div>
-            <span class="pill" style="color:var(--accent-amber); background:rgba(253,224,141,0.14);">H1 2027 · Prototyping</span>
-            <h3 style="font-size:19px; margin-top:10px;">Voice Adventure Walkie-Talkie</h3>
-            <ul class="bullet-list">
-              <li><div><strong>A Stranded Character on the Line:</strong> Connect with a live gaming persona stuck on a foreign planet or inside an escape room.</div></li>
-              <li><div><strong>100% Voice Co-Op:</strong> Calm them down, instruct exploration, and solve live incidents together to unlock the next level.</div></li>
-            </ul>
-          </div>
+      <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; align-items:center; gap:10px; flex:1;">
+        <div class="card" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+          <div class="eyebrow">01 · Ship</div>
+          <div style="font-size:17px; font-weight:600;">6–10 Products / Yr</div>
+          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Ambient devices across daily life</p>
         </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
+        <div class="card card-sage" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+          <div class="eyebrow">02 · Spark</div>
+          <div style="font-size:17px; font-weight:600;">Spontaneous Play</div>
+          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Users talk for joy, not chores</p>
+        </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
+        <div class="card" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+          <div class="eyebrow">03 · Collect</div>
+          <div style="font-size:17px; font-weight:600;">Exclusive Joy Data</div>
+          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Un-scrapable emotional signals</p>
+        </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
+        <div class="card card-sage" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
+          <div class="eyebrow">04 · Evolve</div>
+          <div style="font-size:17px; font-weight:600;">Smarter “Fun AI”</div>
+          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Compounds retention across all SKUs</p>
+        </div>
+      </div>
+
+      <div class="card card-stone" style="margin-top:14px; padding:10px; text-align:center; font-size:11.5px; font-weight:600; color:var(--ink-secondary);">
+        ↺ Continuous Compounding Loop Across Every Brand &amp; Hardware Line
       </div>
     </section>
 
-    <!-- SLIDE 7: WAVE 2 H1 2027 PIPELINE (PART 2 - KIDS DOODLE PAD) -->
+    <!-- SLIDE 7: CLOSING SUMMARY -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">06 · H1 2027 Pipeline · Currently in Prototyping</div>
-          <h2 class="slide-title">Wave 2 Spotlight: E-Ink Children’s Story Doodle Pad</h2>
-          <p class="slide-subtitle">How children should interact with AI—long before they even know what “AI” is.</p>
+          <div class="eyebrow">06 · Summary</div>
+          <h2 class="slide-title">Delightfully “Useless.” Commercially Unstoppable.</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-2">
-        <div class="card">
-          <div>
-            <span class="pill">H1 2027 · Prototyping</span>
-            <h3 style="font-size:22px; margin-top:14px;">Eye-Friendly E-Ink Doodle Pad</h3>
-            <p style="font-size:13.5px; color:var(--text-secondary); font-weight:300; margin-top:8px; line-height:1.5;">
-              A calm, paper-like tablet that meets every child’s drawing or handwritten curiosity with imaginative back-and-forth play.
-            </p>
-            <ul class="bullet-list" style="margin-top:18px; gap:14px;">
-              <li><div><strong>Doodle-to-Comic Storytelling:</strong> Extends a child’s drawing into a comic-style story sequence, co-creating plot twists together back and forth.</div></li>
-              <li><div><strong>Visual Curiosity Q&amp;A:</strong> Whether a child writes a question or doodles a puzzle, the pad responds naturally in their visual language.</div></li>
-              <li><div><strong>Healthy Cognitive Play:</strong> Zero blue-light overload or algorithmic feeds—pure creative agency.</div></li>
-            </ul>
-          </div>
+      <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; flex:1; margin-bottom:18px;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="eyebrow">Category of One</div>
+          <div style="font-size:20px; font-weight:600; margin:6px 0 10px;">Fun AI &gt; Functional AI</div>
+          <p style="font-size:12.5px; color:var(--ink-secondary);">Owning daily consumer joy &amp; voice while the rest of tech fights over spreadsheets.</p>
         </div>
+        <div class="card callout-lime" style="display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Asymmetric Hardware Math</div>
+          <div style="font-size:20px; font-weight:700; margin:6px 0 10px;">&lt; 9 Mos · $150K–$200K</div>
+          <p style="font-size:12.5px;">1 shared AI + SaaS backend powers 6–10 US hardware launches per year.</p>
+        </div>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="eyebrow">Compounding Moat</div>
+          <div style="font-size:20px; font-weight:600; margin:6px 0 10px;">2 Launching · 3 Prototyping</div>
+          <p style="font-size:12.5px; color:var(--ink-secondary);">2,000 US units shipping Dec 2026; building the only dataset of human play.</p>
+        </div>
+      </div>
 
-        <div class="img-placeholder" style="margin-bottom:0; height:100%;">
-          <div class="sparkle">✦</div>
-          <div class="ph-title" style="font-size:15px;">[ Hero Image Placeholder · E-Ink Children’s Doodle Pad ]</div>
-          <div class="ph-sub">Drop large product photo + sample child doodle-to-comic sequence here</div>
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 28px;">
+        <div>
+          <div class="banrai-logo" style="font-size:24px;">Banrai<span class="dot"></span></div>
+          <div style="font-size:13px; color:var(--ink-secondary); margin-top:2px;">Make Humans Talk Again.</div>
+        </div>
+        <div style="text-align:right; font-size:12.5px; color:var(--ink-secondary); line-height:1.5;">
+          <strong style="color:var(--ink-primary);">banrai.ai</strong> &nbsp;·&nbsp; hello@banrai.ai<br/>
+          Appendix (Product Gallery A1–A3) Follows →
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 8: THE DATA MOAT -->
+    <!-- APPENDIX A1: WAVE 1 GALLERY -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">07 · The Compounding Data Moat</div>
-          <h2 class="slide-title">Capturing the Data That Doesn’t Exist on the Internet</h2>
-          <p class="slide-subtitle">Public web data teaches AI how to work. Only our hardware portfolio captures how humans play, wonder, and laugh.</p>
+          <div class="eyebrow">Appendix A1 · Wave 1 Product Gallery (Dec 2026)</div>
+          <h2 class="slide-title">Shipping Dec 2026: 1,000 US Units Each (On Budget)</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-3" style="flex:1;">
-        <div class="card highlight-lime">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="flex:1; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Magical Living Photo Frame ]</div>
+            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Generous frame for hardware + animated portrait preview</div>
+          </div>
           <div>
-            <div class="eyebrow">Step 01 · Portfolio Velocity</div>
-            <h3 style="font-size:20px; margin:8px 0 12px;">6–10 New Products Every Year</h3>
-            <p style="font-size:13px; color:var(--text-secondary); font-weight:300; line-height:1.5;">
-              Backed by a deep backlog of concepts, we launch 6–10 distinct AI-native hardware products annually across bedrooms, living rooms, and pockets.
+            <span class="badge callout-lime">Dec 2026 · 1,000 US Units</span>
+            <span style="font-size:17px; font-weight:600; margin-left:10px;">Magical Living Photo Frame</span>
+            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+              • Harry Potter-style living portraits that wave hello as you walk by.<br/>
+              • Syncs with live local weather (pulls out an umbrella inside the frame when it rains outside).
             </p>
           </div>
-          <div class="pill" style="width:100%; justify-content:center;">Low $150K–$200K CapEx per bet</div>
         </div>
 
-        <div class="card highlight-mint">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="flex:1; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Pocket Interactive Bible ]</div>
+            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Generous frame for standalone E-Ink + 4G hardware</div>
+          </div>
           <div>
-            <div class="eyebrow" style="color:var(--accent-mint);">Step 02 · Proprietary Signals</div>
-            <h3 style="font-size:20px; margin:8px 0 12px;">Un-Scrapable “Joy &amp; Play” Data</h3>
-            <p style="font-size:13px; color:var(--text-secondary); font-weight:300; line-height:1.5;">
-              How humans interact with AI when seeking happiness, play, and companionship does not exist on the public web—it must be earned and evolved through live daily usage.
+            <span class="badge card-sage">Dec 2026 · 1,000 US Units</span>
+            <span style="font-size:17px; font-weight:600; margin-left:10px;">Pocket Interactive Bible</span>
+            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+              • Standalone E-Ink + 4G cellular device for focused, distraction-free faith.<br/>
+              • Warm Christian companion that deepens Scripture understanding via daily talk.
             </p>
           </div>
-          <div class="pill" style="width:100%; justify-content:center; color:var(--accent-mint);">100% Exclusive First-Party Data</div>
-        </div>
-
-        <div class="card highlight-lavender">
-          <div>
-            <div class="eyebrow" style="color:var(--accent-lavender);">Step 03 · Flywheel Effect</div>
-            <h3 style="font-size:20px; margin:8px 0 12px;">The Only True “Fun AI” Engine</h3>
-            <p style="font-size:13px; color:var(--text-secondary); font-weight:300; line-height:1.5;">
-              Every interaction across our portfolio feeds our unified backend—making every existing and future Banrai product warmer, wittier, and stickier.
-            </p>
-          </div>
-          <div class="pill" style="width:100%; justify-content:center; color:var(--accent-lavender);">Compounding Subscription Retention</div>
         </div>
       </div>
     </section>
 
-    <!-- SLIDE 9: SUMMARY / CLOSING -->
+    <!-- APPENDIX A2: WAVE 2 GALLERY (DREAM PRINTER & WALKIE TALKIE) -->
     <section class="slide">
       <div class="slide-top">
         <div>
-          <div class="eyebrow">08 · The Banrai Opportunity</div>
-          <h2 class="slide-title">Delightfully Useless. Commercially Unstoppable.</h2>
-          <p class="slide-subtitle">Building the consumer AI ecosystem that enters daily life through joy, voice, and imagination.</p>
+          <div class="eyebrow">Appendix A2 · Wave 2 Product Gallery (H1 2027)</div>
+          <h2 class="slide-title">Prototyping for H1 2027: Morning Rituals &amp; Voice Gaming</h2>
         </div>
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div class="grid-3" style="margin-bottom:20px; flex:1;">
-        <div class="card">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="flex:1; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Dream Printer ]</div>
+            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Bedside alarm-clock hardware + visual dream diary UI</div>
+          </div>
           <div>
-            <div class="eyebrow">Category Creation</div>
-            <h3 style="font-size:18px; margin:6px 0 10px;">Fun AI &gt; Functional AI</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              Counter-trend positioning owning daily consumer happiness while everyone else fights over enterprise productivity.
+            <span class="badge card-slate">H1 2027 · Prototyping</span>
+            <span style="font-size:17px; font-weight:600; margin-left:10px;">Dream Printer</span>
+            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+              • Press a button upon waking to speak your dream; generates dream art + transcript.<br/>
+              • Builds a connected dream diary linking recurring themes across prior nights.
             </p>
           </div>
         </div>
-        <div class="card">
-          <div>
-            <div class="eyebrow" style="color:var(--accent-mint);">SaaS Hardware Engine</div>
-            <h3 style="font-size:18px; margin:6px 0 10px;">$150K–$200K · &lt; 9 Months</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              Rapid US hardware launches on a single shared backend, monetized via 100% hard monthly subscriptions.
-            </p>
-          </div>
-        </div>
-        <div class="card">
-          <div>
-            <div class="eyebrow" style="color:var(--accent-lavender);">Immediate Pipeline</div>
-            <h3 style="font-size:18px; margin:6px 0 10px;">2 Launching · 3 Prototyping</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); font-weight:300; line-height:1.45;">
-              2,000 total Wave-1 units hitting the US in Dec 2026, followed by 3 Wave-2 products in H1 2027.
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <div class="card highlight-lime" style="flex-direction:row; justify-content:space-between; align-items:center; padding:22px 32px;">
-        <div>
-          <div class="banrai-logo" style="font-size:26px;">Banrai<span class="dot"></span></div>
-          <div style="font-size:14px; color:var(--text-secondary); margin-top:4px;">Make Humans Talk Again.</div>
-        </div>
-        <div style="text-align:right; font-size:13px; color:var(--text-secondary); line-height:1.6;">
-          <strong style="color:var(--text-primary);">banrai.ai</strong> &nbsp;·&nbsp; hello@banrai.ai<br/>
-          Seed+ Investor Deck · US Consumer AI Ecosystem
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="flex:1; margin-bottom:14px;">
+            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Voice Walkie-Talkie ]</div>
+            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Tactile walkie-talkie gaming hardware</div>
+          </div>
+          <div>
+            <span class="badge card-slate">H1 2027 · Prototyping</span>
+            <span style="font-size:17px; font-weight:600; margin-left:10px;">Voice Gaming Walkie-Talkie</span>
+            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+              • A character stranded on an alien planet or escape room calls for your help.<br/>
+              • Calm them down, guide exploration, and solve live incidents by voice.
+            </p>
+          </div>
         </div>
       </div>
     </section>
+
+    <!-- APPENDIX A3: WAVE 2 SPOTLIGHT (KIDS E-INK DOODLE PAD) -->
+    <section class="slide">
+      <div class="slide-top">
+        <div>
+          <div class="eyebrow">Appendix A3 · Wave 2 Product Gallery (H1 2027)</div>
+          <h2 class="slide-title">Prototyping for H1 2027: E-Ink Children’s Story Doodle Pad</h2>
+        </div>
+        <div class="banrai-logo">Banrai<span class="dot"></span></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1.55fr; gap:22px; flex:1;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <span class="badge callout-lime">H1 2027 · Prototyping</span>
+            <h3 style="font-size:21px; margin-top:12px; line-height:1.2;">Eye-Friendly E-Ink Children’s Doodle Pad</h3>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px;">
+              How kids should experience AI—long before they even know what AI is.
+            </p>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="card card-stone" style="padding:12px;">
+              <div style="font-size:12px; font-weight:600;">Doodle → Comic Story</div>
+              <div style="font-size:11px; color:var(--ink-secondary);">Extends any child’s sketch into a back-and-forth comic adventure.</div>
+            </div>
+            <div class="card card-stone" style="padding:12px;">
+              <div style="font-size:12px; font-weight:600;">Visual Q&amp;A</div>
+              <div style="font-size:11px; color:var(--ink-secondary);">Answers handwritten or doodled questions in a child-friendly way.</div>
+            </div>
+            <div class="card card-stone" style="padding:12px;">
+              <div style="font-size:12px; font-weight:600;">Calm E-Ink Screen</div>
+              <div style="font-size:11px; color:var(--ink-secondary);">Zero blue light or addictive feeds—pure creative agency.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="display:flex;">
+          <div class="img-frame" style="flex:1;">
+            <div style="font-size:14px; font-weight:600;">[ Hero Product Photo · E-Ink Children’s Story Doodle Pad ]</div>
+            <div style="font-size:11.5px; color:var(--ink-muted); margin-top:6px;">Drop large hardware photo + child sketch-to-comic interaction sequence here</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer class="deck-controls">
-    <div class="ctrl-group">
-      <button class="ctrl-btn" onclick="prevSlide()">← Prev</button>
-      <span id="slide-indicator" style="min-width:64px; text-align:center; font-weight:500;">01 / 09</span>
-      <button class="ctrl-btn" onclick="nextSlide()">Next →</button>
+    <div>
+      <button class="btn" onclick="prev()">← Prev</button>
+      <span id="counter" style="margin:0 12px; font-weight:600; color:var(--ink-primary);">01 / 10</span>
+      <button class="btn" onclick="next()">Next →</button>
     </div>
-    <div class="ctrl-group">
-      <span>Use <strong>← / →</strong> keys to navigate</span>
-      <button class="ctrl-btn" onclick="toggleTheme()">☀ / ☾ Toggle Calm Theme</button>
-      <button class="ctrl-btn" onclick="window.print()">Print / Save PDF</button>
+    <div>
+      <span>Core Deck (01–07) + Product Appendix (08–10)</span>
+      <button class="btn" style="margin-left:12px;" onclick="window.print()">Print / Save PDF</button>
     </div>
   </footer>
 
   <script>
     const slides = Array.from(document.querySelectorAll('.slide'));
-    const indicator = document.getElementById('slide-indicator');
-    let current = 0;
-
-    function showSlide(idx) {
-      current = (idx + slides.length) % slides.length;
-      slides.forEach((s, i) => s.classList.toggle('active', i === current));
-      indicator.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+    const counter = document.getElementById('counter');
+    let idx = 0;
+    function show(n) {
+      idx = (n + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      counter.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
     }
-    function nextSlide() { showSlide(current + 1); }
-    function prevSlide() { showSlide(current - 1); }
-    function toggleTheme() {
-      const root = document.documentElement;
-      root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark';
-    }
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
-      if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    function next() { show(idx + 1); }
+    function prev() { show(idx - 1); }
+    window.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
     });
   </script>
 </body>
