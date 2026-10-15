@@ -143,17 +143,23 @@
       border: 1px solid var(--border-subtle);
     }
 
-    /* Image Placeholder */
+    /* Product Image Frame */
     .img-frame {
       background: var(--card-stone);
-      border: 1.5px dashed var(--border-strong);
+      border: 1px solid var(--border-subtle);
       border-radius: 14px;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 20px;
+      overflow: hidden;
+      min-height: 0;
+      padding: 0;
+    }
+    .img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
     }
 
     /* Controls */
@@ -209,7 +215,7 @@
             <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:3px;">SaaS recurring model</div>
           </div>
           <div class="card callout-lime" style="padding:16px;">
-            <div style="font-size:14px; font-weight:700;">&lt; 9 Mos · $150K–$200K</div>
+            <div style="font-size:14px; font-weight:700;">&lt; 9 Mos · $150K–$200K Each</div>
             <div style="font-size:11.5px; color:var(--ink-primary); margin-top:3px;">Concept to 1,000 US units</div>
           </div>
           <div class="card card-stone" style="padding:16px;">
@@ -437,41 +443,51 @@
         </div>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; flex:1;">
-        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 01 ]</div>
+      <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; flex:1; min-height:0;">
+        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between; border-color:var(--callout-lime-border);">
+          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+            <img src="product_photos/processed/s5_01_photoframe.png" alt="Magical Living Photo Frame" />
+          </div>
           <div>
             <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
             <div style="font-size:14px; font-weight:600; line-height:1.2;">Magical Living Photo Frame</div>
             <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Portraits wave hello &amp; react to live local weather.</p>
           </div>
         </div>
-        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 02 ]</div>
+        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between; border-color:var(--callout-lime-border);">
+          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+            <img src="product_photos/processed/s5_02_bible.png" alt="Pocket Interactive Bible" />
+          </div>
           <div>
             <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
             <div style="font-size:14px; font-weight:600; line-height:1.2;">Pocket Interactive Bible</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Standalone E-Ink + 4G daily Christian buddy.</p>
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Standalone E-Ink + 4G daily Christian companion.</p>
           </div>
         </div>
-        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 03 ]</div>
+        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+            <img src="product_photos/processed/s5_03_dreamprinter.png" alt="Dream Printer" />
+          </div>
           <div>
             <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
             <div style="font-size:14px; font-weight:600; line-height:1.2;">Dream Printer</div>
             <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">One-button morning dream art &amp; connected diary.</p>
           </div>
         </div>
-        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 04 ]</div>
+        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+            <img src="product_photos/processed/s5_04_mayday.png" alt="Voice Gaming Walkie-Talkie" />
+          </div>
           <div>
             <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
             <div style="font-size:14px; font-weight:600; line-height:1.2;">Voice Gaming Walkie-Talkie</div>
             <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Co-op voice rescue with a stranded character.</p>
           </div>
         </div>
-        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:110px; font-size:11px; color:var(--ink-muted);">[ Photo 05 ]</div>
+        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+            <img src="product_photos/processed/s5_05_doodleboard.png" alt="Kids' E-Ink Doodle Pad" />
+          </div>
           <div>
             <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
             <div style="font-size:14px; font-weight:600; line-height:1.2;">Kids’ E-Ink Doodle Pad</div>
@@ -482,7 +498,7 @@
 
       <div class="card card-stone" style="margin-top:14px; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
         <strong>Deep Backlog: Launching 6–10 new Fun AI hardware products every year.</strong>
-        <span style="color:var(--sage-accent); font-weight:600;">See Appendix (A1–A3) for full product gallery →</span>
+        <span style="color:var(--sage-accent); font-weight:600;">See Appendix (A1–A3) for full product visuals →</span>
       </div>
     </section>
 
@@ -560,20 +576,19 @@
           <p style="font-size:12.5px;">1 shared AI + SaaS backend powers 6–10 US hardware launches per year.</p>
         </div>
         <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
-          <div class="eyebrow">Compounding Moat</div>
+          <div class="eyebrow">Compounding Data Moat</div>
           <div style="font-size:20px; font-weight:600; margin:6px 0 10px;">2 Launching · 3 Prototyping</div>
           <p style="font-size:12.5px; color:var(--ink-secondary);">2,000 US units shipping Dec 2026; building the only dataset of human play.</p>
         </div>
       </div>
 
-      <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:20px 28px;">
+      <div class="card" style="display:flex; justify-content:space-between; align-items:flex-end; padding:20px 28px;">
         <div>
-          <div class="banrai-logo" style="font-size:24px;">Banrai<span class="dot"></span></div>
-          <div style="font-size:13px; color:var(--ink-secondary); margin-top:2px;">Make Humans Talk Again.</div>
+          <div class="banrai-logo" style="font-size:20px;">Banrai<span class="dot"></span></div>
+          <div style="font-size:15px; font-weight:600; color:var(--ink-primary); margin-top:4px;">Make Humans Talk Again.</div>
         </div>
-        <div style="text-align:right; font-size:12.5px; color:var(--ink-secondary); line-height:1.5;">
-          <strong style="color:var(--ink-primary);">banrai.ai</strong> &nbsp;·&nbsp; hello@banrai.ai<br/>
-          Appendix (Product Gallery A1–A3) Follows →
+        <div style="text-align:right; font-size:12.5px; color:var(--ink-secondary);">
+          Appendix Follows →
         </div>
       </div>
     </section>
@@ -588,31 +603,29 @@
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="flex:1; margin-bottom:14px;">
-            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Magical Living Photo Frame ]</div>
-            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Generous frame for hardware + animated portrait preview</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1; min-height:0;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
+          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+            <img src="product_photos/processed/a1_photoframe_collage.png" alt="Magical Living Photo Frame 3-Angle Hardware Collage" />
           </div>
           <div>
-            <span class="badge callout-lime">Dec 2026 · 1,000 US Units</span>
+            <span class="badge callout-lime">Dec 2026 · 1K Units</span>
             <span style="font-size:17px; font-weight:600; margin-left:10px;">Magical Living Photo Frame</span>
-            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
               • Harry Potter-style living portraits that wave hello as you walk by.<br/>
-              • Syncs with live local weather (pulls out an umbrella inside the frame when it rains outside).
+              • Syncs with live local weather (pulls out an umbrella when it rains outside).
             </p>
           </div>
         </div>
 
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="flex:1; margin-bottom:14px;">
-            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Pocket Interactive Bible ]</div>
-            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Generous frame for standalone E-Ink + 4G hardware</div>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
+          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+            <img src="product_photos/processed/a1_bible_preview.png" alt="Pocket Interactive Bible Hardware Collage" />
           </div>
           <div>
-            <span class="badge card-sage">Dec 2026 · 1,000 US Units</span>
+            <span class="badge card-sage">Dec 2026 · 1K Units</span>
             <span style="font-size:17px; font-weight:600; margin-left:10px;">Pocket Interactive Bible</span>
-            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+            <p style="font-size:11px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
               • Standalone E-Ink + 4G cellular device for focused, distraction-free faith.<br/>
               • Warm Christian companion that deepens Scripture understanding via daily talk.
             </p>
@@ -631,31 +644,29 @@
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="flex:1; margin-bottom:14px;">
-            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Dream Printer ]</div>
-            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Bedside alarm-clock hardware + visual dream diary UI</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1; min-height:0;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
+          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+            <img src="product_photos/processed/a2_dreamprinter_collage.png" alt="Dream Printer Hardware & Thermal + HD Dream Art Collage" />
           </div>
           <div>
-            <span class="badge card-slate">H1 2027 · Prototyping</span>
+            <span class="badge card-slate">H1 2027 · Prototype</span>
             <span style="font-size:17px; font-weight:600; margin-left:10px;">Dream Printer</span>
-            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+            <p style="font-size:10px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
               • Press a button upon waking to speak your dream; generates dream art + transcript.<br/>
               • Builds a connected dream diary linking recurring themes across prior nights.
             </p>
           </div>
         </div>
 
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="flex:1; margin-bottom:14px;">
-            <div style="font-size:13px; font-weight:600;">[ Drop Product Photo · Voice Walkie-Talkie ]</div>
-            <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Tactile walkie-talkie gaming hardware</div>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
+          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+            <img src="product_photos/processed/a2_mayday_collage.png" alt="Voice Gaming Walkie-Talkie Mayday Multi-State Collage" />
           </div>
           <div>
-            <span class="badge card-slate">H1 2027 · Prototyping</span>
+            <span class="badge card-slate">H1 2027 · Prototype</span>
             <span style="font-size:17px; font-weight:600; margin-left:10px;">Voice Gaming Walkie-Talkie</span>
-            <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+            <p style="font-size:10px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
               • A character stranded on an alien planet or escape room calls for your help.<br/>
               • Calm them down, guide exploration, and solve live incidents by voice.
             </p>
@@ -674,10 +685,10 @@
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div style="display:grid; grid-template-columns: 1fr 1.55fr; gap:22px; flex:1;">
+      <div style="display:grid; grid-template-columns: 1fr 1.55fr; gap:22px; flex:1; min-height:0;">
         <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
           <div>
-            <span class="badge callout-lime">H1 2027 · Prototyping</span>
+            <span class="badge callout-lime">H1 2027 · Prototype</span>
             <h3 style="font-size:21px; margin-top:12px; line-height:1.2;">Eye-Friendly E-Ink Children’s Doodle Pad</h3>
             <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px;">
               How kids should experience AI—long before they even know what AI is.
@@ -686,23 +697,22 @@
           <div style="display:flex; flex-direction:column; gap:10px;">
             <div class="card card-stone" style="padding:12px;">
               <div style="font-size:12px; font-weight:600;">Doodle → Comic Story</div>
-              <div style="font-size:11px; color:var(--ink-secondary);">Extends any child’s sketch into a back-and-forth comic adventure.</div>
+              <div style="font-size:10px; color:var(--ink-secondary);">Extends any child’s sketch into a back-and-forth comic adventure.</div>
             </div>
             <div class="card card-stone" style="padding:12px;">
               <div style="font-size:12px; font-weight:600;">Visual Q&amp;A</div>
-              <div style="font-size:11px; color:var(--ink-secondary);">Answers handwritten or doodled questions in a child-friendly way.</div>
+              <div style="font-size:10px; color:var(--ink-secondary);">Answers handwritten or doodled questions in a child-friendly way.</div>
             </div>
             <div class="card card-stone" style="padding:12px;">
               <div style="font-size:12px; font-weight:600;">Calm E-Ink Screen</div>
-              <div style="font-size:11px; color:var(--ink-secondary);">Zero blue light or addictive feeds—pure creative agency.</div>
+              <div style="font-size:10px; color:var(--ink-secondary);">Zero blue light or addictive feeds—pure creative agency.</div>
             </div>
           </div>
         </div>
 
-        <div class="card" style="display:flex;">
+        <div class="card" style="display:flex; min-height:0; padding:16px;">
           <div class="img-frame" style="flex:1;">
-            <div style="font-size:14px; font-weight:600;">[ Hero Product Photo · E-Ink Children’s Story Doodle Pad ]</div>
-            <div style="font-size:11.5px; color:var(--ink-muted); margin-top:6px;">Drop large hardware photo + child sketch-to-comic interaction sequence here</div>
+            <img src="product_photos/processed/a3_doodleboard_collage.png" alt="Kids' E-Ink Doodle Pad Sketch-to-Comic Sequence Collage" />
           </div>
         </div>
       </div>

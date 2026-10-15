@@ -5,7 +5,8 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 
-OUT_DIR = "/Users/mklaw/Developer/klaw/Seed Plus Round"
+OUT_DIR = os.path.dirname(os.path.abspath(__file__))
+IMG_DIR = os.path.join(OUT_DIR, "product_photos", "processed")
 
 # ==============================================================================
 # PANTONE-INSPIRED CALM LIGHT PALETTE
@@ -100,7 +101,7 @@ def add_logo(slide, left, top, hero=False):
         dot.line.width = Pt(0.75)
 
 
-def add_header(slide, section_label, title, slide_label):
+def add_header(slide, section_label, title, slide_label, title_width=11.60):
     set_slide_bg(slide, PAL["bg_canvas"])
     # Calm section label
     add_text(slide, 0.9, 0.55, 6.0, 0.28, section_label.upper(), size=9.5, bold=True, color=PAL["sage_accent"])
@@ -109,7 +110,7 @@ def add_header(slide, section_label, title, slide_label):
     # Bottom-right slide counter
     add_text(slide, 11.3, 6.90, 1.15, 0.28, slide_label, size=9, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.RIGHT)
     # Crisp, editorial headline
-    add_text(slide, 0.9, 0.88, 10.5, 0.65, title, size=28, bold=True, color=PAL["ink_primary"], line_spacing=1.12)
+    add_text(slide, 0.9, 0.88, title_width, 0.55, title, size=28, bold=True, color=PAL["ink_primary"], line_spacing=1.12)
 
 
 def add_image_placeholder(slide, left, top, width, height, title, subtitle):
@@ -121,6 +122,14 @@ def add_image_placeholder(slide, left, top, width, height, title, subtitle):
     add_text(slide, cx - 0.26, cy - 0.48, 0.52, 0.52, "＋", size=16, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER, anchor=MSO_ANCHOR.MIDDLE)
     add_text(slide, left + 0.3, cy + 0.14, width - 0.6, 0.32, title, size=11.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
     add_text(slide, left + 0.3, cy + 0.42, width - 0.6, 0.32, subtitle, size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
+
+
+def add_product_image(slide, left, top, width, height, img_filename, radius=0.04):
+    add_box(slide, left - 0.02, top - 0.02, width + 0.04, height + 0.04,
+            fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], border_pt=1.0, radius=radius)
+    img_path = os.path.join(IMG_DIR, img_filename)
+    if os.path.exists(img_path):
+        slide.shapes.add_picture(img_path, Inches(left), Inches(top), width=Inches(width), height=Inches(height))
 
 
 def build_pantone_deck(output_path):
@@ -156,13 +165,13 @@ def build_pantone_deck(output_path):
     # 3 Minimal Stat Pills at bottom — only middle/key one uses bright lime callout
     s1_stats = [
         ("100% Hard-Subscription", "SaaS recurring model", PAL["card_stone"], PAL["border_subtle"]),
-        ("< 9 Mos  ·  $150K–$200K", "Concept to 1,000 US units", PAL["callout_lime"], PAL["callout_lime_border"]),
+        ("< 9 Mos  ·  $150K–$200K Each", "Concept to 1,000 US units", PAL["callout_lime"], PAL["callout_lime_border"]),
         ("6–10 Products / Year", "Powered by 1 shared backend", PAL["card_stone"], PAL["border_subtle"]),
     ]
     for i, (big, sub, bg_c, brd_c) in enumerate(s1_stats):
         x = 1.65 + i * 3.45
         add_box(s1, x, 4.95, 3.15, 1.15, fill_color=bg_c, border_color=brd_c, radius=0.08)
-        add_text(s1, x + 0.15, 5.18, 2.85, 0.35, big, size=13, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
+        add_text(s1, x + 0.08, 5.18, 2.99, 0.35, big, size=12.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
         add_text(s1, x + 0.15, 5.55, 2.85, 0.30, sub, size=10.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.CENTER)
 
     # ==========================================================================
@@ -245,7 +254,7 @@ def build_pantone_deck(output_path):
     add_box(s3, 0.90, 4.05, 11.53, 2.60, fill_color=PAL["card_white"], border_color=PAL["sage_accent"], border_pt=1.5, radius=0.04)
     add_text(s3, 1.25, 4.32, 3.2, 0.28, "THE BANRAI MODEL", size=9.5, bold=True, color=PAL["sage_accent"])
     add_text(s3, 1.25, 4.60, 3.2, 0.45, "100% Hard-Subscription", size=19, bold=True, color=PAL["ink_primary"])
-    add_text(s3, 1.25, 5.10, 3.2, 1.10, "Real AI costs tokens—so there is no free tier. Hardware unlocks high-margin, SaaS-style recurring revenue.", size=10.5, bold=False, color=PAL["ink_secondary"])
+    add_text(s3, 1.25, 5.37, 3.2, 1.10, "Real AI costs tokens—so there is no free tier. Hardware unlocks high-margin, SaaS-style recurring revenue.", size=10.5, bold=False, color=PAL["ink_secondary"])
 
     banrai_steps = [
         ("01 · Unbox", "Hardware + Free Months", "Ships with bundled trial months for instant magic", PAL["card_sage"], PAL["border_subtle"]),
@@ -265,7 +274,7 @@ def build_pantone_deck(output_path):
     # SLIDE 4: UNFAIR ADVANTAGE — HUB & SPOKE ARCHITECTURE + COST GRAPHIC
     # ==========================================================================
     s4 = prs.slides.add_slide(blank)
-    add_header(s4, "03 · Unfair Advantage", "One Shared Backend Powers Dozens of Hardware Products.", "04 / 07")
+    add_header(s4, "03 · Unfair Advantage", "One Shared Backend Powers Dozens of Hardware Products.", "04 / 07", title_width=11.94)
 
     # LEFT SIDE: Visual Hub-and-Spoke Diagram (1 Backend -> Many Hardware Form Factors)
     add_box(s4, 0.90, 1.75, 6.75, 4.95, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
@@ -346,18 +355,17 @@ def build_pantone_deck(output_path):
 
     # 5 Clean Visual Product Cards in a 5-Column Strip
     products_overview = [
-        ("01", "Magical Living\nPhoto Frame", "Dec 2026", "Portraits wave hello & react to live local weather", PAL["card_white"], PAL["callout_lime_border"]),
-        ("02", "Pocket Interactive\nBible", "Dec 2026", "Standalone E-Ink + 4G daily Christian companion", PAL["card_white"], PAL["callout_lime_border"]),
-        ("03", "Dream\nPrinter", "H1 2027", "One-button morning dream art & connected diary", PAL["card_white"], PAL["border_subtle"]),
-        ("04", "Voice Gaming\nWalkie-Talkie", "H1 2027", "Co-op voice rescue with a stranded character", PAL["card_white"], PAL["border_subtle"]),
-        ("05", "Kids’ E-Ink\nDoodle Pad", "H1 2027", "Turns children’s sketches into interactive comics", PAL["card_white"], PAL["border_subtle"]),
+        ("01", "Magical Living\nPhoto Frame", "Dec 2026", "Portraits wave hello & react to live local weather", PAL["card_white"], PAL["callout_lime_border"], "s5_01_photoframe.png"),
+        ("02", "Pocket Interactive\nBible", "Dec 2026", "Standalone E-Ink + 4G daily Christian companion", PAL["card_white"], PAL["callout_lime_border"], "s5_02_bible.png"),
+        ("03", "Dream\nPrinter", "H1 2027", "One-button morning dream art & connected diary", PAL["card_white"], PAL["border_subtle"], "s5_03_dreamprinter.png"),
+        ("04", "Voice Gaming\nWalkie-Talkie", "H1 2027", "Co-op voice rescue with a stranded character", PAL["card_white"], PAL["border_subtle"], "s5_04_mayday.png"),
+        ("05", "Kids’ E-Ink\nDoodle Pad", "H1 2027", "Turns children’s sketches into interactive comics", PAL["card_white"], PAL["border_subtle"], "s5_05_doodleboard.png"),
     ]
-    for i, (num, p_name, p_date, p_hook, bg_c, brd_c) in enumerate(products_overview):
+    for i, (num, p_name, p_date, p_hook, bg_c, brd_c, p_img) in enumerate(products_overview):
         px = 0.90 + i * 2.34
         add_box(s5, px, 2.32, 2.18, 3.45, fill_color=bg_c, border_color=brd_c, border_pt=1.25, radius=0.04)
-        # Mini visual placeholder thumbnail inside each card
-        add_box(s5, px + 0.16, 2.48, 1.86, 1.35, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.06)
-        add_text(s5, px + 0.24, 2.98, 1.70, 0.35, f"[ Photo {num} ]", size=9.5, bold=False, color=PAL["ink_muted"], align=PP_ALIGN.CENTER)
+        # Curated & color-graded product thumbnail inside each card
+        add_product_image(s5, px + 0.16, 2.48, 1.86, 1.35, p_img, radius=0.05)
         # Product Title & 1-sentence essence
         add_text(s5, px + 0.18, 3.98, 1.82, 0.24, p_date.upper(), size=8.5, bold=True, color=PAL["sage_accent"])
         add_text(s5, px + 0.18, 4.22, 1.82, 0.60, p_name, size=13, bold=True, color=PAL["ink_primary"], line_spacing=1.15)
@@ -380,7 +388,7 @@ def build_pantone_deck(output_path):
     # SLIDE 6: THE DATA MOAT — VISUAL FLYWHEEL DIAGRAM
     # ==========================================================================
     s6 = prs.slides.add_slide(blank)
-    add_header(s6, "05 · Defensibility & Moat", "Capturing the Data That Doesn’t Exist on the Internet.", "06 / 07")
+    add_header(s6, "05 · Defensibility & Moat", "Capturing the Data That Doesn’t Exist on the Internet.", "06 / 07", title_width=11.02)
 
     # Top Contrast Strip: Public Web Data vs Banrai Data
     add_box(s6, 0.90, 1.75, 5.60, 1.25, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.04)
@@ -431,9 +439,9 @@ def build_pantone_deck(output_path):
 
     # Calm Footer Callout Card
     add_box(s7, 0.90, 5.25, 11.53, 1.40, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.04)
-    add_logo(s7, 1.20, 5.58, hero=False)
+    add_logo(s7, 0.87, 5.58, hero=False)
     add_text(s7, 1.30, 5.98, 4.5, 0.35, "Make Humans Talk Again.", size=14, bold=True, color=PAL["ink_primary"])
-    add_text(s7, 6.50, 5.62, 5.55, 0.70, "banrai.ai   ·   hello@banrai.ai\nSeed+ Investor Presentation  ·  Appendix Follows →", size=11.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.RIGHT, line_spacing=1.4)
+    add_text(s7, 6.48, 5.98, 5.55, 0.25, "Appendix Follows →", size=11.5, bold=False, color=PAL["ink_secondary"], align=PP_ALIGN.RIGHT, line_spacing=1.4)
 
     # ==========================================================================
     # APPENDIX A1: WAVE 1 PRODUCTS (DEC 2026) — GALLERY VIEW
@@ -443,47 +451,47 @@ def build_pantone_deck(output_path):
 
     # Left: Magical Living Photo Frame (Huge Image Space + 2 Short Lines)
     add_box(sa1, 0.90, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
-    add_image_placeholder(sa1, 1.12, 1.92, 5.16, 3.30, "[ Drop Product Photo · Magical Living Photo Frame ]", "Generous 16:10 frame for hardware + animated portrait preview")
+    add_product_image(sa1, 1.12, 1.92, 5.16, 3.30, "a1_photoframe_collage.png", radius=0.03)
     add_box(sa1, 1.12, 5.38, 1.75, 0.28, fill_color=PAL["callout_lime"], border_color=PAL["callout_lime_border"], radius=0.15)
     add_text(sa1, 1.18, 5.42, 1.63, 0.22, "DEC 2026 · 1K UNITS", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
     add_text(sa1, 3.00, 5.36, 3.30, 0.32, "Magical Living Photo Frame", size=15, bold=True, color=PAL["ink_primary"])
-    add_text(sa1, 1.12, 5.80, 5.16, 0.72, "• Harry Potter-style living portraits that wave hello as you walk by.\n• Syncs with live local weather (pulls out an umbrella when it rains outside).", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+    add_text(sa1, 1.12, 5.80, 5.16, 0.69, "• Harry Potter-style living portraits that wave hello as you walk by.\n• Syncs with live local weather (pulls out an umbrella when it rains outside).", size=10.0, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
 
     # Right: Pocket Interactive Bible
     add_box(sa1, 6.83, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
-    add_image_placeholder(sa1, 7.05, 1.92, 5.16, 3.30, "[ Drop Product Photo · Pocket Interactive Bible ]", "Generous 16:10 frame for standalone E-Ink + 4G hardware")
+    add_product_image(sa1, 7.05, 1.92, 5.16, 3.30, "a1_bible_preview.png", radius=0.03)
     add_box(sa1, 7.05, 5.38, 1.75, 0.28, fill_color=PAL["card_sage"], border_color=PAL["sage_accent"], radius=0.15)
     add_text(sa1, 7.11, 5.42, 1.63, 0.22, "DEC 2026 · 1K UNITS", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
     add_text(sa1, 8.93, 5.36, 3.30, 0.32, "Pocket Interactive Bible", size=15, bold=True, color=PAL["ink_primary"])
-    add_text(sa1, 7.05, 5.80, 5.16, 0.72, "• Standalone E-Ink + 4G cellular device for focused, distraction-free faith.\n• Warm Christian companion that deepens Scripture understanding via daily talk.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+    add_text(sa1, 7.05, 5.80, 5.16, 0.66, "• Standalone E-Ink + 4G cellular device for focused, distraction-free faith.\n• Warm Christian companion that deepens Scripture understanding via daily talk.", size=10.0, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
 
     # ==========================================================================
     # APPENDIX A2: WAVE 2 PRODUCTS (H1 2027 PROTOTYPING) — GALLERY VIEW
     # ==========================================================================
     sa2 = prs.slides.add_slide(blank)
-    add_header(sa2, "Appendix A2 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: Morning Rituals & Voice Gaming", "A2 / A3")
+    add_header(sa2, "Appendix A2 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: Morning Rituals & Voice Gaming", "A2 / A3", title_width=11.49)
 
     # Left: Dream Printer
     add_box(sa2, 0.90, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
-    add_image_placeholder(sa2, 1.12, 1.92, 5.16, 3.30, "[ Drop Product Photo · Dream Printer ]", "Bedside alarm-clock hardware + visual dream diary UI")
+    add_product_image(sa2, 1.12, 1.92, 5.16, 3.30, "a2_dreamprinter_collage.png", radius=0.03)
     add_box(sa2, 1.12, 5.38, 1.85, 0.28, fill_color=PAL["card_slate"], border_color=PAL["slate_accent"], radius=0.15)
     add_text(sa2, 1.18, 5.42, 1.73, 0.22, "H1 2027 · PROTOTYPE", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
     add_text(sa2, 3.10, 5.36, 3.20, 0.32, "Dream Printer", size=15, bold=True, color=PAL["ink_primary"])
-    add_text(sa2, 1.12, 5.80, 5.16, 0.72, "• Press a button upon waking to speak your dream; generates dream art + transcript.\n• Builds a connected dream diary linking recurring themes across prior nights.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+    add_text(sa2, 1.12, 5.80, 5.16, 0.62, "• Press a button upon waking to speak your dream; generates dream art + transcript.\n• Builds a connected dream diary linking recurring themes across prior nights.", size=9.0, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
 
     # Right: Voice Adventure Walkie-Talkie
     add_box(sa2, 6.83, 1.72, 5.60, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
-    add_image_placeholder(sa2, 7.05, 1.92, 5.16, 3.30, "[ Drop Product Photo · Voice Walkie-Talkie ]", "Tactile walkie-talkie gaming hardware")
+    add_product_image(sa2, 7.05, 1.92, 5.16, 3.30, "a2_mayday_collage.png", radius=0.03)
     add_box(sa2, 7.05, 5.38, 1.85, 0.28, fill_color=PAL["card_slate"], border_color=PAL["slate_accent"], radius=0.15)
     add_text(sa2, 7.11, 5.42, 1.73, 0.22, "H1 2027 · PROTOTYPE", size=8.5, bold=True, color=PAL["ink_primary"], align=PP_ALIGN.CENTER)
     add_text(sa2, 9.03, 5.36, 3.20, 0.32, "Voice Gaming Walkie-Talkie", size=15, bold=True, color=PAL["ink_primary"])
-    add_text(sa2, 7.05, 5.80, 5.16, 0.72, "• A character stranded on an alien planet or escape room calls for your help.\n• Calm them down, guide exploration, and solve live incidents by voice.", size=10.5, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
+    add_text(sa2, 7.05, 5.80, 5.16, 0.39, "• A character stranded on an alien planet or escape room calls for your help.\n• Calm them down, guide exploration, and solve live incidents by voice.", size=9.0, bold=False, color=PAL["ink_secondary"], line_spacing=1.35)
 
     # ==========================================================================
     # APPENDIX A3: WAVE 2 SPOTLIGHT — KIDS' E-INK DOODLE PAD
     # ==========================================================================
     sa3 = prs.slides.add_slide(blank)
-    add_header(sa3, "Appendix A3 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: E-Ink Children’s Story Doodle Pad", "A3 / A3")
+    add_header(sa3, "Appendix A3 · Wave 2 Product Gallery (H1 2027)", "Prototyping for H1 2027: E-Ink Children’s Story Doodle Pad", "A3 / A3", title_width=11.55)
 
     # Left: Concise 3-pill summary card
     add_box(sa3, 0.90, 1.72, 4.45, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
@@ -502,11 +510,11 @@ def build_pantone_deck(output_path):
         ky = 4.00 + i * 0.82
         add_box(sa3, 1.20, ky, 3.85, 0.70, fill_color=PAL["card_stone"], border_color=PAL["border_subtle"], radius=0.06)
         add_text(sa3, 1.38, ky + 0.10, 3.50, 0.24, kf_head, size=10.5, bold=True, color=PAL["ink_primary"])
-        add_text(sa3, 1.38, ky + 0.35, 3.50, 0.28, kf_sub, size=9.5, bold=False, color=PAL["ink_secondary"])
+        add_text(sa3, 1.38, ky + 0.35, 3.50, 0.35, kf_sub, size=9.0, bold=False, color=PAL["ink_secondary"])
 
-    # Right: Giant Gallery Image Placeholder (60%+ of slide width)
+    # Right: Giant Gallery Image Collage (60%+ of slide width)
     add_box(sa3, 5.60, 1.72, 6.83, 5.00, fill_color=PAL["card_white"], border_color=PAL["border_subtle"], radius=0.03)
-    add_image_placeholder(sa3, 5.85, 1.95, 6.33, 4.54, "[ Hero Product Photo · E-Ink Children’s Story Doodle Pad ]", "Drop large hardware photo + child sketch-to-comic interaction sequence here")
+    add_product_image(sa3, 5.85, 1.95, 6.33, 4.54, "a3_doodleboard_collage.png", radius=0.03)
 
     prs.save(output_path)
     print(f"Saved Pantone Light Deck: {output_path}")
