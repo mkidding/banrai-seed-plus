@@ -161,6 +161,35 @@
       object-fit: contain;
       display: block;
     }
+    .img-frame.cover img {
+      object-fit: cover;
+    }
+
+    /* Hub-and-Spoke Connector (Slide 4) */
+    .spoke-row {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-height: 0;
+    }
+    .spoke-connector {
+      width: 38px;
+      height: 2px;
+      background: var(--sage-accent);
+      position: relative;
+      flex-shrink: 0;
+      margin-right: 4px;
+    }
+    .spoke-connector::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 7px solid var(--sage-accent);
+    }
 
     /* Controls */
     .deck-controls {
@@ -196,31 +225,29 @@
 
     <!-- SLIDE 1: COVER -->
     <section class="slide active">
-      <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:space-between; align-items:center; text-align:center; padding:48px;">
-        <span class="badge">Seed+ Investor Presentation · US Market</span>
-
-        <div>
-          <div class="banrai-logo hero">Banrai<span class="dot"></span></div>
-          <h1 style="font-size:32px; font-weight:600; margin-top:14px; letter-spacing:-0.02em;">
+      <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:52px 48px; gap:54px;">
+        <div style="margin-top:12px;">
+          <div class="banrai-logo hero" style="font-size:68px;">Banrai<span class="dot"></span></div>
+          <h1 style="font-size:32px; font-weight:600; margin-top:18px; letter-spacing:-0.02em;">
             Consumer AI Hardware Built for Joy, Not Chores.
           </h1>
-          <p style="font-size:15px; color:var(--ink-secondary); margin-top:8px;">
-            Guided by one quiet conviction: <strong>Make Humans Talk Again.</strong>
+          <p style="font-size:14.5px; color:var(--ink-secondary); margin-top:10px;">
+            Make Humans Talk Again &nbsp;·&nbsp; Seed+ Investor Presentation
           </p>
         </div>
 
-        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; width:100%; max-width:920px;">
-          <div class="card card-stone" style="padding:16px;">
-            <div style="font-size:14px; font-weight:600;">100% Hard-Subscription</div>
-            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:3px;">SaaS recurring model</div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:20px; width:100%; max-width:960px; margin-top:8px;">
+          <div class="card card-stone" style="padding:18px 16px;">
+            <div style="font-size:14.5px; font-weight:600;">100% Hard-Subscription</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:4px;">SaaS recurring model</div>
           </div>
-          <div class="card callout-lime" style="padding:16px;">
-            <div style="font-size:14px; font-weight:700;">&lt; 9 Mos · $150K–$200K Each</div>
-            <div style="font-size:11.5px; color:var(--ink-primary); margin-top:3px;">Concept to 1,000 US units</div>
+          <div class="card callout-lime" style="padding:18px 16px;">
+            <div style="font-size:14.5px; font-weight:700;">&lt; 9 Mos &nbsp;·&nbsp; $150K–$200K Each</div>
+            <div style="font-size:11.5px; color:var(--ink-primary); margin-top:4px;">Concept to 1,000 US units</div>
           </div>
-          <div class="card card-stone" style="padding:16px;">
-            <div style="font-size:14px; font-weight:600;">6–10 Products / Year</div>
-            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:3px;">Powered by 1 shared backend</div>
+          <div class="card card-stone" style="padding:18px 16px;">
+            <div style="font-size:14.5px; font-weight:600;">6–10 Products / Year</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:4px;">Powered by 1 shared backend</div>
           </div>
         </div>
       </div>
@@ -240,53 +267,51 @@
         <!-- 2x2 Visual Matrix -->
         <div class="card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between;">
           <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">CONSUMER AI LANDSCAPE</div>
-          <div style="position:relative; flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:24px; padding:24px 16px;">
+          <div style="position:relative; flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:28px; padding:28px 16px 24px;">
             <!-- Crosshairs -->
-            <div style="position:absolute; left:8%; right:8%; top:50%; height:1.5px; background:var(--border-strong);"></div>
+            <div style="position:absolute; left:6%; right:6%; top:50%; height:1.5px; background:var(--border-strong);"></div>
             <div style="position:absolute; top:8%; bottom:8%; left:50%; width:1.5px; background:var(--border-strong);"></div>
-            <span style="position:absolute; left:8%; top:52%; font-size:10px; font-weight:600; color:var(--ink-muted);">← Work &amp; Tasks</span>
-            <span style="position:absolute; right:8%; top:52%; font-size:10px; font-weight:600; color:var(--sage-accent);">Play &amp; Daily Joy →</span>
-            <span style="position:absolute; left:50%; top:2%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-secondary);">↑ Tactile Hardware</span>
-            <span style="position:absolute; left:50%; bottom:2%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-muted);">↓ Screen Chatbots</span>
+            <span style="position:absolute; left:6%; top:52%; font-size:10px; font-weight:600; color:var(--ink-muted);">← Work &amp; Tasks</span>
+            <span style="position:absolute; right:6%; top:52%; font-size:10px; font-weight:600; color:var(--sage-accent);">Play &amp; Daily Joy →</span>
+            <span style="position:absolute; left:50%; top:1.5%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-secondary);">↑ Tactile Hardware</span>
+            <span style="position:absolute; left:50%; bottom:1.5%; transform:translateX(-50%); font-size:10px; font-weight:600; color:var(--ink-muted);">↓ Screen Chatbots</span>
 
             <!-- Top Left -->
-            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:14px;">
-              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Utility Wearables</div>
-              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:3px;">Trying to replace the phone</div>
+            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:16px 14px;">
+              <div style="font-size:12.5px; font-weight:600; color:var(--ink-secondary);">Utility Wearables</div>
+              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:4px;">Trying to replace the smartphone</div>
             </div>
             <!-- Top Right: BANRAI CALLOUT -->
-            <div class="card callout-lime" style="margin:auto; width:92%; text-align:center; padding:16px;">
-              <div style="font-size:14px; font-weight:700;">Banrai · “Fun AI”</div>
-              <div style="font-size:10.5px; margin-top:4px;">Delightfully “useless” hardware for daily joy &amp; conversation</div>
+            <div class="card callout-lime" style="margin:auto; width:92%; text-align:center; padding:18px 14px;">
+              <div style="font-size:14.5px; font-weight:700;">Banrai · “Fun AI”</div>
+              <div style="font-size:10.5px; margin-top:4px; line-height:1.35;">Delightfully “useless” hardware for daily joy &amp; conversation</div>
             </div>
             <!-- Bottom Left -->
-            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:14px;">
-              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Functional AI Crowd</div>
-              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:3px;">Emails, code, spreadsheets (99% of market)</div>
+            <div class="card card-stone" style="margin:auto; width:88%; text-align:center; padding:16px 14px;">
+              <div style="font-size:12.5px; font-weight:600; color:var(--ink-secondary);">Functional AI Crowd</div>
+              <div style="font-size:10.5px; color:var(--ink-muted); margin-top:4px;">Emails, coding, productivity (99% of VC &amp; Big Tech)</div>
             </div>
             <!-- Bottom Right -->
-            <div style="margin:auto; width:88%; text-align:center; font-size:11px; color:var(--ink-muted);">
-              Screen-bound entertainment apps
-            </div>
+            <div style="margin:auto; width:88%; text-align:center;"></div>
           </div>
         </div>
 
         <!-- 3 Crisp Essence Blocks -->
         <div style="display:flex; flex-direction:column; gap:14px; justify-content:space-between;">
-          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 24px;">
             <div class="eyebrow">01 · Counter-Trend</div>
-            <div style="font-size:17px; font-weight:600;">Delightfully “Useless”</div>
-            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Zero task optimization. Built purely for curiosity, laughter, and warmth.</p>
+            <div style="font-size:18px; font-weight:600; margin-top:2px;">Delightfully “Useless”</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px; line-height:1.45;">Zero task optimization. Built purely for curiosity, laughter, and warmth.</p>
           </div>
-          <div class="card card-sage" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <div class="card card-sage" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 24px;">
             <div class="eyebrow">02 · Unifying Theme</div>
-            <div style="font-size:17px; font-weight:600;">“Make Humans Talk Again”</div>
-            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Replaces passive screen scrolling with active voice, stories, and imagination.</p>
+            <div style="font-size:18px; font-weight:600; margin-top:2px;">“Make Humans Talk Again”</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px; line-height:1.45;">Replaces passive screen scrolling with active voice, stories, and imagination.</p>
           </div>
-          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+          <div class="card" style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 24px;">
             <div class="eyebrow">03 · Multi-Brand Strategy</div>
-            <div style="font-size:17px; font-weight:600;">Ambient in Every Room</div>
-            <p style="font-size:12px; color:var(--ink-secondary); margin-top:4px;">Different brands &amp; form factors—from bedside clocks to living room frames.</p>
+            <div style="font-size:18px; font-weight:600; margin-top:2px;">Ambient in Every Room</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px; line-height:1.45;">Different brands &amp; form factors—from bedside clocks to living room frames.</p>
           </div>
         </div>
       </div>
@@ -304,54 +329,54 @@
 
       <div style="display:flex; flex-direction:column; gap:18px; flex:1;">
         <!-- Traditional Hardware Track -->
-        <div class="card card-stone" style="display:grid; grid-template-columns: 1.1fr 2.4fr; gap:24px; align-items:center; flex:0.85;">
+        <div class="card card-stone" style="display:grid; grid-template-columns: 1.08fr 2.42fr; gap:24px; align-items:center; flex:0.88; padding:22px 26px;">
           <div>
             <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">TRADITIONAL HARDWARE</div>
-            <div style="font-size:18px; font-weight:600; color:var(--ink-secondary); margin-top:4px;">One-Time Unit Margin</div>
-            <p style="font-size:11.5px; color:var(--ink-muted); margin-top:4px;">Profit stops at checkout. Forced to push Gen-2 upgrades.</p>
+            <div style="font-size:19px; font-weight:600; color:var(--ink-secondary); margin-top:6px;">One-Time Unit Margin</div>
+            <p style="font-size:12px; color:var(--ink-muted); margin-top:6px; line-height:1.45;">Profit stops at checkout. Forced to push Gen-2 upgrades to survive.</p>
           </div>
-          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:10px;">
-            <div class="card" style="text-align:center; padding:14px;">
-              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Day 1: Sell Box</div>
-              <div style="font-size:10.5px; color:var(--ink-muted);">One-off margin</div>
+          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:stretch; gap:12px; height:84%;">
+            <div class="card" style="text-align:center; padding:18px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:13px; font-weight:600; color:var(--ink-secondary);">Day 1: Sell Box</div>
+              <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">One-off hardware margin</div>
             </div>
-            <span style="color:var(--ink-muted);">→</span>
-            <div class="card" style="text-align:center; padding:14px;">
-              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Month 2–12</div>
-              <div style="font-size:10.5px; color:var(--ink-muted);">$0 recurring revenue</div>
+            <span style="color:var(--ink-muted); align-self:center; font-size:16px;">→</span>
+            <div class="card" style="text-align:center; padding:18px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:13px; font-weight:600; color:var(--ink-secondary);">Month 2–12</div>
+              <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">$0 recurring revenue</div>
             </div>
-            <span style="color:var(--ink-muted);">→</span>
-            <div class="card" style="text-align:center; padding:14px;">
-              <div style="font-size:12px; font-weight:600; color:var(--ink-secondary);">Year 2+</div>
-              <div style="font-size:10.5px; color:var(--ink-muted);">Push Gen-2 hardware</div>
+            <span style="color:var(--ink-muted); align-self:center; font-size:16px;">→</span>
+            <div class="card" style="text-align:center; padding:18px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:13px; font-weight:600; color:var(--ink-secondary);">Year 2+</div>
+              <div style="font-size:11px; color:var(--ink-muted); margin-top:4px;">Beg user to buy Gen-2</div>
             </div>
           </div>
         </div>
 
         <!-- Banrai Hard-Subscription Track -->
-        <div class="card" style="border:1.5px solid var(--sage-accent); display:grid; grid-template-columns: 1.1fr 2.4fr; gap:24px; align-items:center; flex:1.15;">
+        <div class="card" style="border:1.5px solid var(--sage-accent); display:grid; grid-template-columns: 1.08fr 2.42fr; gap:24px; align-items:center; flex:1.12; padding:24px 26px;">
           <div>
             <div class="eyebrow">The Banrai Model</div>
-            <div style="font-size:21px; font-weight:600;">100% Hard-Subscription</div>
-            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px;">Real AI costs tokens—so there is no free tier. Hardware unlocks SaaS recurring LTV.</p>
+            <div style="font-size:21px; font-weight:600; margin-top:4px;">100% Hard-Subscription</div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">Real AI costs tokens—so there is no free tier. Hardware unlocks high-margin, SaaS-style recurring revenue.</p>
           </div>
-          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:10px;">
-            <div class="card card-sage" style="text-align:center; padding:18px 14px;">
-              <div style="font-size:10px; font-weight:600; color:var(--sage-accent);">01 · UNBOX</div>
-              <div style="font-size:13px; font-weight:600; margin-top:4px;">Hardware + Free Months</div>
-              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:4px;">Bundled trial for instant magic</div>
+          <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:stretch; gap:12px; height:88%;">
+            <div class="card card-sage" style="text-align:center; padding:20px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.08em; color:var(--sage-accent);">01 · UNBOX</div>
+              <div style="font-size:14px; font-weight:600; margin-top:6px;">Hardware + Free Months</div>
+              <div style="font-size:11px; color:var(--ink-secondary); margin-top:6px; line-height:1.35;">Ships with bundled trial months for instant magic</div>
             </div>
-            <span style="color:var(--sage-accent); font-weight:700;">→</span>
-            <div class="card callout-lime" style="text-align:center; padding:18px 14px;">
-              <div style="font-size:10px; font-weight:700;">02 · SUBSCRIBE</div>
-              <div style="font-size:13px; font-weight:700; margin-top:4px;">Mandatory Monthly Fee</div>
-              <div style="font-size:10.5px; margin-top:4px;">Keeps the AI companion alive</div>
+            <span style="color:var(--sage-accent); font-weight:700; align-self:center; font-size:18px;">→</span>
+            <div class="card callout-lime" style="text-align:center; padding:20px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:10px; font-weight:700; letter-spacing:0.08em;">02 · SUBSCRIBE</div>
+              <div style="font-size:14px; font-weight:700; margin-top:6px;">Mandatory Monthly Fee</div>
+              <div style="font-size:11px; margin-top:6px; line-height:1.35;">Hard subscription keeps the AI companion alive</div>
             </div>
-            <span style="color:var(--sage-accent); font-weight:700;">→</span>
-            <div class="card card-sage" style="text-align:center; padding:18px 14px;">
-              <div style="font-size:10px; font-weight:600; color:var(--sage-accent);">03 · COMPOUND</div>
-              <div style="font-size:13px; font-weight:600; margin-top:4px;">Continuous SaaS Value</div>
-              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:4px;">Cloud evolves stories &amp; memory</div>
+            <span style="color:var(--sage-accent); font-weight:700; align-self:center; font-size:18px;">→</span>
+            <div class="card card-sage" style="text-align:center; padding:20px 14px; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:10px; font-weight:600; letter-spacing:0.08em; color:var(--sage-accent);">03 · COMPOUND</div>
+              <div style="font-size:14px; font-weight:600; margin-top:6px;">Continuous SaaS Value</div>
+              <div style="font-size:11px; color:var(--ink-secondary); margin-top:6px; line-height:1.35;">Cloud updates stories &amp; memory—growing LTV</div>
             </div>
           </div>
         </div>
@@ -368,56 +393,86 @@
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap:22px; flex:1;">
+      <div style="display:grid; grid-template-columns: 1.45fr 1fr; gap:22px; flex:1; min-height:0;">
         <!-- Hub & Spoke Graphic -->
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
-          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--sage-accent);">REUSABLE PLATFORM ARCHITECTURE</div>
-          <div style="display:grid; grid-template-columns: 1fr 40px 1.25fr; align-items:center; flex:1; padding:8px 0;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; padding:20px 22px;">
+          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--sage-accent); margin-bottom:12px;">REUSABLE PLATFORM ARCHITECTURE</div>
+          <div style="display:grid; grid-template-columns: 0.92fr 1.38fr; align-items:stretch; flex:1; min-height:0;">
             <!-- Left Hub -->
-            <div class="card card-sage" style="border:1.5px solid var(--sage-accent); text-align:center; padding:20px 14px;">
-              <div style="font-size:10px; font-weight:700; color:var(--sage-accent);">SHARED CORE</div>
-              <div style="font-size:16px; font-weight:700; margin:6px 0 12px;">1 Unified AI +<br/>Billing Backend</div>
-              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600; margin-bottom:6px;">Conversational Voice OS</div>
-              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600; margin-bottom:6px;">Image &amp; Story Engine</div>
-              <div class="card" style="padding:8px; font-size:10.5px; font-weight:600;">Subscription &amp; Metering</div>
+            <div class="card card-sage" style="border:1.5px solid var(--sage-accent); text-align:center; padding:22px 16px; display:flex; flex-direction:column; justify-content:space-between;">
+              <div>
+                <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; color:var(--sage-accent);">SHARED CORE</div>
+                <div style="font-size:18.5px; font-weight:700; margin-top:8px; line-height:1.25;">1 Unified AI +<br/>Billing Backend</div>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:12px; margin-top:18px; flex:1; justify-content:space-between;">
+                <div class="card" style="flex:1; display:flex; align-items:center; justify-content:center; padding:10px; font-size:11.5px; font-weight:600;">Conversational Voice OS</div>
+                <div class="card" style="flex:1; display:flex; align-items:center; justify-content:center; padding:10px; font-size:11.5px; font-weight:600;">Image &amp; Story Engine</div>
+                <div class="card" style="flex:1; display:flex; align-items:center; justify-content:center; padding:10px; font-size:11.5px; font-weight:600;">Subscription &amp; Metering</div>
+              </div>
             </div>
-            <!-- Connectors -->
-            <div style="display:flex; flex-direction:column; justify-content:space-around; height:82%; align-items:center; color:var(--sage-accent); font-weight:700;">
-              <span>───►</span><span>───►</span><span>───►</span><span>───►</span><span>───►</span><span>───►</span>
-            </div>
-            <!-- Right Spokes -->
-            <div style="display:flex; flex-direction:column; gap:7px;">
-              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>01 · Living Photo Frame</strong><span style="color:var(--ink-secondary);">Dec 2026</span></div>
-              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>02 · Pocket Interactive Bible</strong><span style="color:var(--ink-secondary);">Dec 2026</span></div>
-              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>03 · Dream Printer</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
-              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>04 · Voice Walkie-Talkie</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
-              <div class="card card-stone" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>05 · Kids’ E-Ink Doodle Pad</strong><span style="color:var(--ink-secondary);">H1 2027</span></div>
-              <div class="card card-slate" style="padding:9px 14px; display:flex; justify-content:space-between; font-size:11px;"><strong>06–10+ · New Launches / Yr</strong><span style="color:var(--slate-accent);">Pipeline</span></div>
+            <!-- Right Spokes (Each with locked horizontal connector) -->
+            <div style="display:flex; flex-direction:column; justify-content:space-between; gap:8px;">
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-stone" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>01 · Living Photo Frame</strong><span style="color:var(--ink-secondary); font-size:11px;">Dec 2026</span>
+                </div>
+              </div>
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-stone" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>02 · Pocket Interactive Bible</strong><span style="color:var(--ink-secondary); font-size:11px;">Dec 2026</span>
+                </div>
+              </div>
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-stone" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>03 · Dream Printer</strong><span style="color:var(--ink-secondary); font-size:11px;">H1 2027</span>
+                </div>
+              </div>
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-stone" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>04 · Voice Walkie-Talkie</strong><span style="color:var(--ink-secondary); font-size:11px;">H1 2027</span>
+                </div>
+              </div>
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-stone" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>05 · Kids’ E-Ink Doodle Pad</strong><span style="color:var(--ink-secondary); font-size:11px;">H1 2027</span>
+                </div>
+              </div>
+              <div class="spoke-row">
+                <div class="spoke-connector"></div>
+                <div class="card card-slate" style="flex:1; height:100%; padding:0 14px; display:flex; align-items:center; justify-content:space-between; font-size:11.5px;">
+                  <strong>06–10+ · New Launches / Yr</strong><span style="color:var(--slate-accent); font-size:11px; font-weight:500;">Ongoing Pipeline</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Visual Cost & Speed Bars -->
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; padding:20px 24px;">
           <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">ECONOMICS PER HARDWARE LINE (US MARKET)</div>
 
           <div>
-            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">Time to Market (First 1,000 US Units)</div>
-            <div class="card card-stone" style="padding:8px 12px; font-size:11px; color:var(--ink-secondary); margin-bottom:6px;">Traditional Hardware: 18 – 24+ Months</div>
-            <div class="card card-sage" style="width:52%; padding:8px 12px; font-size:11.5px; font-weight:700; border-color:var(--sage-accent);">Banrai: &lt; 9 Mos</div>
+            <div style="font-size:13px; font-weight:600; margin-bottom:8px;">Time to Market (Concept → First 1,000 US Units)</div>
+            <div class="card card-stone" style="padding:11px 14px; font-size:11.5px; color:var(--ink-secondary); margin-bottom:8px;">Traditional Hardware: 18 – 24+ Months</div>
+            <div class="card card-sage" style="width:52%; padding:11px 14px; font-size:12.5px; font-weight:700; border-color:var(--sage-accent);">Banrai: &lt; 9 Mos</div>
           </div>
 
           <div>
-            <div style="font-size:12px; font-weight:600; margin-bottom:6px;">All-In Launch Cost (R&amp;D + First 1,000 Units)</div>
-            <div class="card card-stone" style="padding:8px 12px; font-size:11px; color:var(--ink-secondary); margin-bottom:6px;">Traditional Hardware: $3M – $10M+</div>
-            <div class="card callout-lime" style="width:64%; padding:9px 12px; font-size:12px; font-weight:700;">Banrai: $150K – $200K</div>
+            <div style="font-size:13px; font-weight:600; margin-bottom:8px;">All-In Launch Cost (R&amp;D + First 1,000 Units)</div>
+            <div class="card card-stone" style="padding:11px 14px; font-size:11.5px; color:var(--ink-secondary); margin-bottom:8px;">Traditional Hardware: $3M – $10M+</div>
+            <div class="card callout-lime" style="width:62%; padding:11px 14px; font-size:12.5px; font-weight:700;">Banrai: $150K – $200K</div>
           </div>
 
-          <div class="card card-stone" style="padding:14px;">
-            <div style="font-size:11.5px; font-weight:600;">Unit Threshold for a Winner</div>
-            <div style="font-size:11px; color:var(--ink-secondary); margin-top:4px;">
-              • Single-Product Co: Needs <strong>10M+ units</strong><br/>
-              • Banrai Portfolio: Wins at <strong>100K+ units</strong> per line
+          <div class="card card-stone" style="padding:18px 20px;">
+            <div style="font-size:13px; font-weight:600;">Unit Threshold for a Commercial Winner</div>
+            <div style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px; line-height:1.55;">
+              • Single-Product Co: Must sell <strong>10M+ units</strong> to survive<br/>
+              • Banrai Portfolio: Profitable hit at <strong>100K+ units</strong> per line
             </div>
           </div>
         </div>
@@ -434,71 +489,71 @@
         <div class="banrai-logo">Banrai<span class="dot"></span></div>
       </div>
 
-      <div style="display:grid; grid-template-columns: 2fr 3fr; gap:14px; margin-bottom:10px;">
+      <div style="display:grid; grid-template-columns: 2fr 3fr; gap:14px; margin-bottom:12px;">
         <div class="card callout-lime" style="padding:8px 14px; text-align:center; font-size:11px; font-weight:700;">
-          WAVE 1 · DEC 2026 (1,000 US UNITS EACH · ON BUDGET)
+          WAVE 1 · SHIPPING DEC 2026 (1,000 US UNITS EACH · ON BUDGET)
         </div>
         <div class="card card-sage" style="padding:8px 14px; text-align:center; font-size:11px; font-weight:600;">
-          WAVE 2 · H1 2027 (CURRENTLY IN PROTOTYPING)
+          WAVE 2 · LAUNCHING H1 2027 (CURRENTLY IN PROTOTYPING)
         </div>
       </div>
 
       <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; flex:1; min-height:0;">
-        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between; border-color:var(--callout-lime-border);">
-          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:flex-start; gap:14px; border:1.5px solid var(--callout-lime-border);">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1381 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/s5_01_photoframe.png" alt="Magical Living Photo Frame" />
           </div>
-          <div>
-            <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
-            <div style="font-size:14px; font-weight:600; line-height:1.2;">Magical Living Photo Frame</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Portraits wave hello &amp; react to live local weather.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+            <div class="eyebrow" style="font-size:11.5px; margin-bottom:0;">Dec 2026</div>
+            <div style="font-size:18px; font-weight:600; line-height:1.25;">Magical Living Photo Frame</div>
+            <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:4px; line-height:1.5;">Portraits wave hello &amp; react to live local weather (umbrella in rain).</p>
           </div>
         </div>
-        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between; border-color:var(--callout-lime-border);">
-          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:flex-start; gap:14px; border:1.5px solid var(--callout-lime-border);">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1381 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/s5_02_bible.png" alt="Pocket Interactive Bible" />
           </div>
-          <div>
-            <div class="eyebrow" style="font-size:9.5px;">Dec 2026</div>
-            <div style="font-size:14px; font-weight:600; line-height:1.2;">Pocket Interactive Bible</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Standalone E-Ink + 4G daily Christian companion.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+            <div class="eyebrow" style="font-size:11.5px; margin-bottom:0;">Dec 2026</div>
+            <div style="font-size:18px; font-weight:600; line-height:1.25;">Pocket Interactive Bible</div>
+            <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:4px; line-height:1.5;">Standalone E-Ink + 4G cellular daily Christian companion.</p>
           </div>
         </div>
-        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:flex-start; gap:14px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1381 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/s5_03_dreamprinter.png" alt="Dream Printer" />
           </div>
-          <div>
-            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
-            <div style="font-size:14px; font-weight:600; line-height:1.2;">Dream Printer</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">One-button morning dream art &amp; connected diary.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+            <div class="eyebrow" style="font-size:11.5px; margin-bottom:0; color:var(--slate-accent);">H1 2027</div>
+            <div style="font-size:18px; font-weight:600; line-height:1.25;">Dream Printer</div>
+            <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:4px; line-height:1.5;">One-button morning voice capture prints dream art &amp; links recurring dreams.</p>
           </div>
         </div>
-        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:flex-start; gap:14px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1381 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/s5_04_mayday.png" alt="Voice Gaming Walkie-Talkie" />
           </div>
-          <div>
-            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
-            <div style="font-size:14px; font-weight:600; line-height:1.2;">Voice Gaming Walkie-Talkie</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Co-op voice rescue with a stranded character.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+            <div class="eyebrow" style="font-size:11.5px; margin-bottom:0; color:var(--slate-accent);">H1 2027</div>
+            <div style="font-size:18px; font-weight:600; line-height:1.25;">Voice Gaming Walkie-Talkie</div>
+            <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:4px; line-height:1.5;">Co-op voice rescue game with a stranded AI character.</p>
           </div>
         </div>
-        <div class="card" style="padding:14px; display:flex; flex-direction:column; justify-content:space-between;">
-          <div class="img-frame" style="height:132px; margin-bottom:10px;">
+        <div class="card" style="padding:16px; display:flex; flex-direction:column; justify-content:flex-start; gap:14px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1381 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/s5_05_doodleboard.png" alt="Kids' E-Ink Doodle Pad" />
           </div>
-          <div>
-            <div class="eyebrow" style="font-size:9.5px;">H1 2027</div>
-            <div style="font-size:14px; font-weight:600; line-height:1.2;">Kids’ E-Ink Doodle Pad</div>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:6px;">Turns children’s sketches into interactive comics.</p>
+          <div style="display:flex; flex-direction:column; gap:6px; flex:1;">
+            <div class="eyebrow" style="font-size:11.5px; margin-bottom:0; color:var(--slate-accent);">H1 2027</div>
+            <div style="font-size:18px; font-weight:600; line-height:1.25;">Kids’ E-Ink Doodle Pad</div>
+            <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:4px; line-height:1.5;">Eye-friendly E-Ink pad turning kids’ sketches into interactive comics.</p>
           </div>
         </div>
       </div>
 
-      <div class="card card-stone" style="margin-top:14px; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+      <div class="card card-stone" style="margin-top:12px; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-size:12.5px;">
         <strong>Deep Backlog: Launching 6–10 new Fun AI hardware products every year.</strong>
-        <span style="color:var(--sage-accent); font-weight:600;">See Appendix (A1–A3) for full product visuals →</span>
+        <span style="color:var(--sage-accent); font-weight:600;">See Appendix (A1–A3) for full product visuals &amp; details →</span>
       </div>
     </section>
 
@@ -513,43 +568,45 @@
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px;">
-        <div class="card card-stone" style="padding:18px 22px;">
-          <div style="font-size:10px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">PUBLIC INTERNET DATA</div>
-          <div style="font-size:14px; font-weight:600; color:var(--ink-secondary); margin-top:4px;">Teaches AI how to work, code, and summarize. Every competitor scrapes the same web.</div>
+        <div class="card card-stone" style="padding:20px 24px;">
+          <div style="font-size:10.5px; font-weight:600; letter-spacing:0.1em; color:var(--ink-muted);">PUBLIC INTERNET DATA</div>
+          <div style="font-size:17px; font-weight:600; color:var(--ink-secondary); margin-top:6px;">Teaches AI how to work, code, and summarize.</div>
+          <div style="font-size:13px; color:var(--ink-muted); margin-top:4px;">Every competitor scrapes the exact same web.</div>
         </div>
-        <div class="card callout-lime" style="padding:18px 22px;">
-          <div style="font-size:10px; font-weight:700; letter-spacing:0.1em;">BANRAI PROPRIETARY DATA</div>
-          <div style="font-size:14px; font-weight:700; margin-top:4px;">Captures how humans play, laugh, and wonder. Zero public dataset exists—earned live.</div>
-        </div>
-      </div>
-
-      <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; align-items:center; gap:10px; flex:1;">
-        <div class="card" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
-          <div class="eyebrow">01 · Ship</div>
-          <div style="font-size:17px; font-weight:600;">6–10 Products / Yr</div>
-          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Ambient devices across daily life</p>
-        </div>
-        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
-        <div class="card card-sage" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
-          <div class="eyebrow">02 · Spark</div>
-          <div style="font-size:17px; font-weight:600;">Spontaneous Play</div>
-          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Users talk for joy, not chores</p>
-        </div>
-        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
-        <div class="card" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
-          <div class="eyebrow">03 · Collect</div>
-          <div style="font-size:17px; font-weight:600;">Exclusive Joy Data</div>
-          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Un-scrapable emotional signals</p>
-        </div>
-        <span style="font-size:20px; color:var(--sage-accent); font-weight:700;">→</span>
-        <div class="card card-sage" style="height:100%; display:flex; flex-direction:column; justify-content:center; text-align:center;">
-          <div class="eyebrow">04 · Evolve</div>
-          <div style="font-size:17px; font-weight:600;">Smarter “Fun AI”</div>
-          <p style="font-size:11.5px; color:var(--ink-secondary); margin-top:6px;">Compounds retention across all SKUs</p>
+        <div class="card callout-lime" style="padding:20px 24px;">
+          <div style="font-size:10.5px; font-weight:700; letter-spacing:0.1em;">BANRAI PROPRIETARY DATA</div>
+          <div style="font-size:17px; font-weight:700; margin-top:6px;">Captures how humans play, laugh, and wonder.</div>
+          <div style="font-size:13px; margin-top:4px;">Zero public dataset exists—it must be earned live.</div>
         </div>
       </div>
 
-      <div class="card card-stone" style="margin-top:14px; padding:10px; text-align:center; font-size:11.5px; font-weight:600; color:var(--ink-secondary);">
+      <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr auto 1fr; align-items:stretch; gap:10px; flex:1;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:26px 18px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:10px;">01 · Ship</div>
+          <div style="font-size:20.5px; font-weight:600;">6–10 Products / Yr</div>
+          <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:10px; line-height:1.45; min-height:40px; max-width:220px;">Ambient hardware across rooms &amp; demographics</p>
+        </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700; align-self:center;">→</span>
+        <div class="card card-sage" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:26px 18px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:10px;">02 · Spark</div>
+          <div style="font-size:20.5px; font-weight:600;">Spontaneous Play</div>
+          <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:10px; line-height:1.45; min-height:40px; max-width:210px;">Users talk for joy, not task completion</p>
+        </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700; align-self:center;">→</span>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:26px 18px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:10px;">03 · Collect</div>
+          <div style="font-size:20.5px; font-weight:600;">Exclusive Joy Data</div>
+          <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:10px; line-height:1.45; min-height:40px; max-width:220px;">Un-scrapable voice, humor &amp; emotional cues</p>
+        </div>
+        <span style="font-size:20px; color:var(--sage-accent); font-weight:700; align-self:center;">→</span>
+        <div class="card card-sage" style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:26px 18px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:10px;">04 · Evolve</div>
+          <div style="font-size:20.5px; font-weight:600;">Smarter “Fun AI”</div>
+          <p style="font-size:13.5px; color:var(--ink-secondary); margin-top:10px; line-height:1.45; min-height:40px; max-width:220px;">Models compound retention across all lines</p>
+        </div>
+      </div>
+
+      <div class="card card-stone" style="margin-top:14px; padding:12px; text-align:center; font-size:12px; font-weight:600; color:var(--ink-secondary);">
         ↺ Continuous Compounding Loop Across Every Brand &amp; Hardware Line
       </div>
     </section>
@@ -565,30 +622,31 @@
       </div>
 
       <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; flex:1; margin-bottom:18px;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
-          <div class="eyebrow">Category of One</div>
-          <div style="font-size:20px; font-weight:600; margin:6px 0 10px;">Fun AI &gt; Functional AI</div>
-          <p style="font-size:12.5px; color:var(--ink-secondary);">Owning daily consumer joy &amp; voice while the rest of tech fights over spreadsheets.</p>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center; padding:36px 28px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:0;">Category of One</div>
+          <div style="font-size:21px; font-weight:600; margin:10px 0 14px; white-space:nowrap;">Fun AI &gt; Functional AI</div>
+          <p style="font-size:14px; color:var(--ink-secondary); line-height:1.55; min-height:66px;">Owning daily consumer joy, imagination, and voice while 99% of tech fights over productivity.</p>
         </div>
-        <div class="card callout-lime" style="display:flex; flex-direction:column; justify-content:center;">
-          <div style="font-size:10.5px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;">Asymmetric Hardware Math</div>
-          <div style="font-size:20px; font-weight:700; margin:6px 0 10px;">&lt; 9 Mos · $150K–$200K</div>
-          <p style="font-size:12.5px;">1 shared AI + SaaS backend powers 6–10 US hardware launches per year.</p>
+        <div class="card callout-lime" style="display:flex; flex-direction:column; justify-content:center; padding:36px 28px;">
+          <div style="font-size:11.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0;">Asymmetric Hardware Math</div>
+          <div style="font-size:21px; font-weight:700; margin:10px 0 14px; white-space:nowrap;">&lt; 9 Mos · $150K–$200K</div>
+          <p style="font-size:14px; line-height:1.55; min-height:66px;">1 shared AI + SaaS billing backend powers 6–10 US hardware launches per year.</p>
         </div>
-        <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
-          <div class="eyebrow">Compounding Data Moat</div>
-          <div style="font-size:20px; font-weight:600; margin:6px 0 10px;">2 Launching · 3 Prototyping</div>
-          <p style="font-size:12.5px; color:var(--ink-secondary);">2,000 US units shipping Dec 2026; building the only dataset of human play.</p>
+        <div class="card" style="display:flex; flex-direction:column; justify-content:center; padding:36px 28px;">
+          <div class="eyebrow" style="font-size:11.5px; margin-bottom:0;">Compounding Data Moat</div>
+          <div style="font-size:21px; font-weight:600; margin:10px 0 14px; white-space:nowrap;">2 Launching · 3 Prototyping</div>
+          <p style="font-size:14px; color:var(--ink-secondary); line-height:1.55; min-height:66px;">2,000 US units shipping Dec 2026—capturing the world’s only dataset of human play.</p>
         </div>
       </div>
 
-      <div class="card" style="display:flex; justify-content:space-between; align-items:flex-end; padding:20px 28px;">
+      <div class="card" style="display:flex; justify-content:space-between; align-items:center; padding:22px 28px;">
         <div>
-          <div class="banrai-logo" style="font-size:20px;">Banrai<span class="dot"></span></div>
-          <div style="font-size:15px; font-weight:600; color:var(--ink-primary); margin-top:4px;">Make Humans Talk Again.</div>
+          <div class="banrai-logo" style="font-size:24px;">Banrai<span class="dot"></span></div>
+          <div style="font-size:15.5px; font-weight:600; color:var(--ink-primary); margin-top:4px;">Make Humans Talk Again.</div>
         </div>
-        <div style="text-align:right; font-size:12.5px; color:var(--ink-secondary);">
-          Appendix Follows →
+        <div style="text-align:right;">
+          <div style="font-size:13px; font-weight:600; color:var(--ink-secondary);">Seed+ Investor Presentation &nbsp;·&nbsp; US Market</div>
+          <div style="font-size:12px; font-weight:600; color:var(--sage-accent); margin-top:4px;">Appendix Follows: Product Visual Gallery (A1–A3) →</div>
         </div>
       </div>
     </section>
@@ -604,28 +662,32 @@
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1; min-height:0;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
-          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 22px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1564 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/a1_photoframe_collage.png" alt="Magical Living Photo Frame 3-Angle Hardware Collage" />
           </div>
-          <div>
-            <span class="badge callout-lime">Dec 2026 · 1K Units</span>
-            <span style="font-size:17px; font-weight:600; margin-left:10px;">Magical Living Photo Frame</span>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:8px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="badge callout-lime" style="font-size:10.5px; padding:5px 12px;">Dec 2026 · 1K Units</span>
+              <span style="font-size:19px; font-weight:600;">Magical Living Photo Frame</span>
+            </div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:10px; line-height:1.6;">
               • Harry Potter-style living portraits that wave hello as you walk by.<br/>
               • Syncs with live local weather (pulls out an umbrella when it rains outside).
             </p>
           </div>
         </div>
 
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
-          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 22px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1564 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/a1_bible_preview.png" alt="Pocket Interactive Bible Hardware Collage" />
           </div>
-          <div>
-            <span class="badge card-sage">Dec 2026 · 1K Units</span>
-            <span style="font-size:17px; font-weight:600; margin-left:10px;">Pocket Interactive Bible</span>
-            <p style="font-size:11px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:8px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="badge card-sage" style="font-size:10.5px; padding:5px 12px;">Dec 2026 · 1K Units</span>
+              <span style="font-size:19px; font-weight:600;">Pocket Interactive Bible</span>
+            </div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:10px; line-height:1.6;">
               • Standalone E-Ink + 4G cellular device for focused, distraction-free faith.<br/>
               • Warm Christian companion that deepens Scripture understanding via daily talk.
             </p>
@@ -645,28 +707,32 @@
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1; min-height:0;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
-          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 22px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1564 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/a2_dreamprinter_collage.png" alt="Dream Printer Hardware & Thermal + HD Dream Art Collage" />
           </div>
-          <div>
-            <span class="badge card-slate">H1 2027 · Prototype</span>
-            <span style="font-size:17px; font-weight:600; margin-left:10px;">Dream Printer</span>
-            <p style="font-size:10px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:8px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="badge card-slate" style="font-size:10.5px; padding:5px 12px;">H1 2027 · Prototype</span>
+              <span style="font-size:19px; font-weight:600;">Dream Printer</span>
+            </div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:10px; line-height:1.6;">
               • Press a button upon waking to speak your dream; generates dream art + transcript.<br/>
               • Builds a connected dream diary linking recurring themes across prior nights.
             </p>
           </div>
         </div>
 
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 20px;">
-          <div class="img-frame" style="flex:1; margin-bottom:12px;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; min-height:0; padding:18px 22px;">
+          <div class="img-frame" style="width:100%; aspect-ratio: 1564 / 1000; flex-shrink:0;">
             <img src="product_photos/processed/a2_mayday_collage.png" alt="Voice Gaming Walkie-Talkie Mayday Multi-State Collage" />
           </div>
-          <div>
-            <span class="badge card-slate">H1 2027 · Prototype</span>
-            <span style="font-size:17px; font-weight:600; margin-left:10px;">Voice Gaming Walkie-Talkie</span>
-            <p style="font-size:10px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
+          <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:8px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span class="badge card-slate" style="font-size:10.5px; padding:5px 12px;">H1 2027 · Prototype</span>
+              <span style="font-size:19px; font-weight:600;">Voice Gaming Walkie-Talkie</span>
+            </div>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:10px; line-height:1.6;">
               • A character stranded on an alien planet or escape room calls for your help.<br/>
               • Calm them down, guide exploration, and solve live incidents by voice.
             </p>
@@ -686,26 +752,26 @@
       </div>
 
       <div style="display:grid; grid-template-columns: 1fr 1.55fr; gap:22px; flex:1; min-height:0;">
-        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; gap:16px; padding:22px 24px;">
           <div>
             <span class="badge callout-lime">H1 2027 · Prototype</span>
-            <h3 style="font-size:21px; margin-top:12px; line-height:1.2;">Eye-Friendly E-Ink Children’s Doodle Pad</h3>
-            <p style="font-size:12px; color:var(--ink-secondary); margin-top:6px;">
+            <h3 style="font-size:21px; margin-top:12px; line-height:1.22;">Eye-Friendly E-Ink Children’s Doodle Pad</h3>
+            <p style="font-size:12px; color:var(--ink-secondary); margin-top:8px; line-height:1.45;">
               How kids should experience AI—long before they even know what AI is.
             </p>
           </div>
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <div class="card card-stone" style="padding:12px;">
-              <div style="font-size:12px; font-weight:600;">Doodle → Comic Story</div>
-              <div style="font-size:10px; color:var(--ink-secondary);">Extends any child’s sketch into a back-and-forth comic adventure.</div>
+          <div style="display:flex; flex-direction:column; gap:10px; flex:1; justify-content:flex-end;">
+            <div class="card card-stone" style="padding:13px 16px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:12.5px; font-weight:600;">Doodle → Comic Story</div>
+              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:3px;">Extends any child’s sketch into a back-and-forth comic adventure.</div>
             </div>
-            <div class="card card-stone" style="padding:12px;">
-              <div style="font-size:12px; font-weight:600;">Visual Q&amp;A</div>
-              <div style="font-size:10px; color:var(--ink-secondary);">Answers handwritten or doodled questions in a child-friendly way.</div>
+            <div class="card card-stone" style="padding:13px 16px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:12.5px; font-weight:600;">Visual Q&amp;A</div>
+              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:3px;">Answers handwritten or doodled questions in a warm, child-friendly way.</div>
             </div>
-            <div class="card card-stone" style="padding:12px;">
-              <div style="font-size:12px; font-weight:600;">Calm E-Ink Screen</div>
-              <div style="font-size:10px; color:var(--ink-secondary);">Zero blue light or addictive feeds—pure creative agency.</div>
+            <div class="card card-stone" style="padding:13px 16px; flex:1; display:flex; flex-direction:column; justify-content:center;">
+              <div style="font-size:12.5px; font-weight:600;">Calm E-Ink Screen</div>
+              <div style="font-size:10.5px; color:var(--ink-secondary); margin-top:3px;">Zero blue light, zero notifications, zero addictive feeds—pure creative agency.</div>
             </div>
           </div>
         </div>
@@ -747,6 +813,11 @@
       if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
     });
+    const params = new URLSearchParams(window.location.search);
+    const initSlide = parseInt(params.get('slide') || window.location.hash.replace('#', ''), 10);
+    if (!isNaN(initSlide) && initSlide >= 1 && initSlide <= slides.length) {
+      show(initSlide - 1);
+    }
   </script>
 </body>
 </html>
